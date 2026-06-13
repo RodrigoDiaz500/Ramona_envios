@@ -1,0 +1,78 @@
+<div class="tracking-page">
+
+  <div class="tracking-overlay">
+
+    <div class="tracking-card">
+
+      <h1>
+        Seguimiento de Envíos
+      </h1>
+
+      <p>
+        Consulta el estado de tu envío en tiempo real.
+      </p>
+
+      <div class="search-container">
+
+        <div class="input-group">
+
+          <input
+            type="text"
+            placeholder=" "
+            [(ngModel)]="trackingCode">
+
+          <label>
+            Código de seguimiento
+          </label>
+
+        </div>
+
+        <button
+          class="btn btn-primary"
+          (click)="searchTracking()">
+
+          Buscar
+        </button>
+
+      </div>
+
+      <div
+        class="result-card"
+        *ngIf="showResult">
+
+        <h2>
+          {{ shipment.code }}
+        </h2>
+
+        <div class="status-badge">
+
+          {{ shipment.status }}
+
+        </div>
+
+        <div class="details">
+
+          <div>
+            <strong>Origen:</strong>
+            {{ shipment.origin }}
+          </div>
+
+          <div>
+            <strong>Destino:</strong>
+            {{ shipment.destination }}
+          </div>
+
+          <div>
+            <strong>Última actualización:</strong>
+            {{ shipment.lastUpdate }}
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

@@ -1,0 +1,110 @@
+<div class="profile-page">
+
+  <div class="profile-overlay">
+
+    <div class="profile-card">
+
+      <h1>
+        Mi Perfil
+      </h1>
+
+      <p>
+        Actualiza tu información personal.
+      </p>
+
+      <form>
+
+        <div class="form-grid">
+
+          <div class="input-group">
+
+            <input
+              type="text"
+              placeholder=" "
+              [(ngModel)]="user.firstName"
+              name="firstName">
+
+            <label>
+              Nombre
+            </label>
+
+          </div>
+
+          <div class="input-group">
+
+            <input
+              type="text"
+              placeholder=" "
+              [(ngModel)]="user.lastName"
+              name="lastName">
+
+            <label>
+              Apellido
+            </label>
+
+          </div>
+
+          <div class="input-group">
+
+            <input
+              type="email"
+              placeholder=" "
+              [(ngModel)]="user.email"
+              name="email">
+
+            <label>
+              Correo Electrónico
+            </label>
+
+          </div>
+
+          <div class="input-group">
+
+            <input
+              type="text"
+              placeholder=" "
+              [(ngModel)]="user.phone"
+              name="phone">
+
+            <label>
+              Teléfono
+            </label>
+
+          </div>
+
+        </div>
+
+        <div class="input-group">
+
+          <input
+            type="text"
+            placeholder=" "
+            [(ngModel)]="user.address"
+            name="address">
+
+          <label>
+            Dirección
+          </label>
+
+        </div>
+
+        <div class="button-container">
+
+          <button
+            type="button"
+            class="btn btn-primary"
+            (click)="saveProfile()">
+
+            Guardar Cambios
+
+          </button>
+
+        </div>
+
+      </form>
+
+    </div>
+
+  </div>
+
+</div>

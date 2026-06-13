@@ -1,0 +1,113 @@
+.history-page {
+
+  min-height: calc(100vh - 90px);
+
+  background-image:
+    url('/images/tracking-background.jpg');
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  padding: 40px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.history-overlay {
+
+  width: 100%;
+  max-width: 1000px;
+}
+
+.history-card {
+
+  background:
+    rgba(255,255,255,.85);
+
+  backdrop-filter:
+    blur(12px);
+
+  padding: 40px;
+
+  border-radius: 24px;
+
+  box-shadow:
+    0 10px 30px rgba(0,0,0,.15);
+}
+
+.history-card h1 {
+
+  text-align: center;
+
+  color: var(--primary);
+
+  margin-bottom: 10px;
+}
+
+.history-card p {
+
+  text-align: center;
+
+  color: var(--text-light);
+
+  margin-bottom: 25px;
+}
+
+.search-container {
+
+  display: flex;
+
+  gap: 15px;
+
+  align-items: center;
+
+  margin-bottom: 30px;
+}
+
+.search-container .input-group {
+
+  flex: 1;
+
+  margin-bottom: 0;
+}
+
+.shipment-item {
+
+  display: flex;
+
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 20px;
+
+  margin-bottom: 15px;
+
+  border-radius: 16px;
+
+  background:
+    rgba(36,60,143,.05);
+
+  border-left:
+    5px solid var(--primary);
+}
+
+.shipment-info h3 {
+
+  color: var(--primary);
+
+  margin-bottom: 8px;
+}
+
+.status {
+
+  display: inline-block;
+
+  margin-bottom: 8px;
+
+  color: #15803d;
+
+  font-weight: 600;
+}

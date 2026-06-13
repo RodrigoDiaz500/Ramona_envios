@@ -1,0 +1,84 @@
+<div class="history-page">
+
+  <div class="history-overlay">
+
+    <div class="history-card">
+
+      <h1>
+        Historial de Envíos
+      </h1>
+
+      <p>
+        Consulta todos los envíos realizados.
+      </p>
+
+      <div class="search-container">
+
+        <div class="input-group">
+
+          <input
+            type="text"
+            placeholder=" ">
+
+          <label>
+            Buscar por código o destino
+          </label>
+
+        </div>
+
+        <button
+          class="btn btn-primary">
+
+          Buscar
+
+        </button>
+
+      </div>
+
+      <div
+        class="shipment-item"
+        *ngFor="let shipment of shipments">
+
+        <div class="shipment-info">
+
+          <h3>
+            {{ shipment.code }}
+          </h3>
+
+          <span
+            class="status">
+
+            {{ shipment.status }}
+
+          </span>
+
+          <p>
+
+            {{ shipment.origin }}
+            →
+            {{ shipment.destination }}
+
+          </p>
+
+          <small>
+
+            {{ shipment.date }}
+
+          </small>
+
+        </div>
+
+        <button
+          class="btn btn-secondary">
+
+          Ver Detalle
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
