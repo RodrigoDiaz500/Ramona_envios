@@ -1,1 +1,82 @@
-<p>branch-management works!</p>
+<div class="branches-page">
+
+  <div class="branches-overlay">
+
+    <div class="branches-card">
+
+      <div class="header">
+
+        <div>
+
+          <h1>
+            Gestión de Sucursales
+          </h1>
+
+          <p>
+            Administra las sucursales del sistema.
+          </p>
+
+        </div>
+
+        <button class="btn btn-primary">
+          Nueva Sucursal
+        </button>
+
+      </div>
+
+      <div
+        class="branch-item"
+        *ngFor="let branch of branches">
+
+        <div class="branch-info">
+
+          <h3>
+            {{ branch.name }}
+          </h3>
+
+          <p>
+            {{ branch.city }}
+          </p>
+
+          <span
+            class="status-badge"
+            [class.active]="branch.active"
+            [class.inactive]="!branch.active">
+
+            {{ branch.active ? 'Activa' : 'Inactiva' }}
+
+          </span>
+
+        </div>
+
+        <div class="actions">
+
+          <button class="btn btn-primary">
+            Editar
+          </button>
+
+          <button
+            *ngIf="branch.active"
+            class="btn btn-danger">
+
+            Deshabilitar
+
+          </button>
+
+          <button
+            *ngIf="!branch.active"
+            class="btn btn-secondary">
+
+            Activar
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

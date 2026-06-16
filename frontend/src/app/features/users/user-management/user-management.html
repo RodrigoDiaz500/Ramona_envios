@@ -1,1 +1,88 @@
-<p>user-management works!</p>
+<div class="users-page">
+
+  <div class="users-overlay">
+
+    <div class="users-card">
+
+      <h1>
+        Gestión de Usuarios
+      </h1>
+
+      <p>
+        Administra usuarios del sistema.
+      </p>
+
+      <div class="search-container">
+
+        <div class="input-group">
+
+          <input
+            type="text"
+            placeholder=" "
+            [(ngModel)]="searchText">
+
+          <label>
+            Buscar usuario
+          </label>
+
+        </div>
+
+      </div>
+
+      <div
+        class="user-item"
+        *ngFor="let user of users">
+
+        <div class="user-info">
+
+          <h3>
+            {{ user.name }}
+          </h3>
+
+          <span
+            class="role-badge">
+
+            {{ user.role }}
+
+          </span>
+
+          <p>
+            {{ user.email }}
+          </p>
+
+        </div>
+
+        <div class="actions">
+
+          <button
+            class="btn btn-primary">
+
+            Editar
+
+          </button>
+
+          <button
+            *ngIf="user.active"
+            class="btn btn-danger">
+
+            Deshabilitar
+
+          </button>
+
+          <button
+            *ngIf="!user.active"
+            class="btn btn-secondary">
+
+            Activar
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

@@ -1,0 +1,69 @@
+<div class="dashboard-page">
+
+  <div class="dashboard-container">
+
+    <div class="dashboard-header">
+
+      <h1>
+        Dashboard
+      </h1>
+
+      <p>
+        Bienvenido a Ramona Envíos
+      </p>
+
+    </div>
+
+    <div class="stats-grid">
+
+      <div
+        class="stat-card"
+        *ngFor="let stat of stats">
+
+        <h2>
+          {{ stat.value }}
+        </h2>
+
+        <span>
+          {{ stat.title }}
+        </span>
+
+      </div>
+
+    </div>
+
+    <div class="dashboard-section">
+
+      <h2>
+        Últimos Envíos
+      </h2>
+
+      <div class="shipment-list">
+
+        <div
+          class="shipment-item"
+          *ngFor="let shipment of recentShipments">
+
+          <div>
+
+            <strong>
+              {{ shipment.code }}
+            </strong>
+
+          </div>
+
+          <div>
+
+            {{ shipment.status }}
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

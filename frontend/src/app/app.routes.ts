@@ -10,6 +10,10 @@ import { ShipmentHistory } from './features/history/shipment-history/shipment-hi
 import { ProfilePage } from './features/profile/profile-page/profile-page';
 import { UserManagement } from './features/users/user-management/user-management';
 import { BranchManagement } from './features/branches/branch-management/branch-management';
+import { UpdateShipmentStatus } from './features/shipments/update-shipment-status/update-shipment-status';
+import { DashboardPage } from './features/dashboard/dashboard-page/dashboard-page';
+import { IncidentManagement } from './features/incidents/incident-management/incident-management';
+import { NotificationCenter } from './features/notifications/notification-center/notification-center';
 
 export const routes: Routes = [
 
@@ -58,7 +62,27 @@ export const routes: Routes = [
       {
         path: 'branches',
         component: BranchManagement
-      }
+      },
+
+      {
+        path: 'shipment-status',
+        component: UpdateShipmentStatus
+      },
+
+      {
+        path: 'dashboard',
+        component: DashboardPage
+      },
+
+      {
+        path: 'incidents',
+        component: IncidentManagement
+      },
+
+      {
+        path: 'notifications',
+        component: NotificationCenter
+      },
 
     ]
   }

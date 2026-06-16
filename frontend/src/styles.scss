@@ -279,9 +279,9 @@ a {
 
 .table th {
 
-  background: var(--primary);
 
-  color: white;
+
+  color: var(--primary);
 
   padding: 14px;
 }
@@ -292,6 +292,7 @@ a {
 
   border-bottom:
     1px solid #e5e7eb;
+  text-align: center;
 }
 
 .table tr:hover {

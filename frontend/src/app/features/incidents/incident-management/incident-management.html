@@ -1,0 +1,87 @@
+<div class="incidents-page">
+
+  <div class="incidents-container">
+
+    <div class="page-header">
+
+      <h1>
+        Gestión de Incidencias
+      </h1>
+
+      <p>
+        Administra problemas y reclamos asociados a envíos.
+      </p>
+
+    </div>
+
+    <div class="table-card">
+
+      <table class="table">
+
+        <thead>
+
+          <tr>
+
+            <th>Código</th>
+
+            <th>Tipo</th>
+
+            <th>Estado</th>
+
+            <th>Acción</th>
+
+          </tr>
+
+        </thead>
+
+        <tbody>
+
+          <tr
+            *ngFor="let incident of incidents">
+
+            <td>
+              {{ incident.code }}
+            </td>
+
+            <td>
+              {{ incident.type }}
+            </td>
+
+            <td>
+
+              <span
+                class="badge"
+                [ngClass]="{
+                  'badge-warning': incident.status === 'Pendiente',
+                  'badge-danger': incident.status === 'En revisión',
+                  'badge-success': incident.status === 'Resuelto'
+                }">
+
+                {{ incident.status }}
+
+              </span>
+
+            </td>
+
+            <td>
+
+              <button
+                class="btn btn-primary">
+
+                Ver Detalle
+
+              </button>
+
+            </td>
+
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </div>
+
+</div>

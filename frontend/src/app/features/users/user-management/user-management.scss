@@ -1,0 +1,114 @@
+.users-page {
+
+  min-height: calc(100vh - 90px);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  padding: 40px;
+}
+
+.users-overlay {
+
+  width: 100%;
+  max-width: 1000px;
+}
+
+.users-card {
+
+  background:
+    rgba(255,255,255,.85);
+
+  backdrop-filter:
+    blur(12px);
+
+  padding: 40px;
+
+  border-radius: 24px;
+
+  box-shadow:
+    0 10px 30px rgba(0,0,0,.15);
+}
+
+.users-card h1 {
+
+  text-align: center;
+
+  color: var(--primary);
+
+  margin-bottom: 10px;
+}
+
+.users-card p {
+
+  text-align: center;
+
+  color: var(--text-light);
+
+  margin-bottom: 30px;
+}
+
+.search-container {
+
+  margin-bottom: 30px;
+}
+
+.search-container .input-group {
+
+  margin-bottom: 0;
+}
+
+.user-item {
+
+  display: flex;
+
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 20px;
+
+  margin-bottom: 15px;
+
+  border-radius: 16px;
+
+  background:
+    rgba(36,60,143,.05);
+
+  border-left:
+    5px solid var(--primary);
+}
+
+.user-info h3 {
+
+  color: var(--primary);
+
+  margin-bottom: 8px;
+}
+
+.role-badge {
+
+  display: inline-block;
+
+  padding: 6px 12px;
+
+  border-radius: 50px;
+
+  background:
+    rgba(36,60,143,.15);
+
+  color: var(--primary);
+
+  font-size: .85rem;
+
+  font-weight: 600;
+
+  margin-bottom: 10px;
+}
+
+.actions {
+
+  display: flex;
+
+  gap: 10px;
+}

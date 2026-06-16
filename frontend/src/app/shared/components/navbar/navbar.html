@@ -4,30 +4,88 @@
 
     <img
       src="images/ramona_express-log.png"
-      alt="Ramona Express">
+      alt="Ramona Envíos">
 
   </div>
 
-  <div class="navbar-menu">
 
-    <a routerLink="/tracking"
-       routerLinkActive="active-link">
+  <div class="navbar-links">
+
+    <a
+      *ngIf="role === 'ADMIN'"
+      routerLink="/dashboard"
+      routerLinkActive="active">
+
+      Dashboard
+
+    </a>
+
+    <a
+      routerLink="/tracking"
+      routerLinkActive="active">
 
       Seguimiento
 
     </a>
 
-    <a routerLink="/shipment"
-       routerLinkActive="active-link">
+    <a
+      routerLink="/shipment"
+      routerLinkActive="active">
 
-      Realizar Envío
+      Crear Envío
 
     </a>
 
-    <a routerLink="/history"
-       routerLinkActive="active-link">
+    <a
+      *ngIf="role === 'CLIENTE'"
+      routerLink="/history"
+      routerLinkActive="active">
 
       Historial
+
+    </a>
+
+    <a
+      *ngIf="role === 'CLIENTE'"
+      routerLink="/profile"
+      routerLinkActive="active">
+
+      Mi Perfil
+
+    </a>
+
+    <a
+      *ngIf="role === 'OPERADOR' || role === 'ADMIN'"
+      routerLink="/users"
+      routerLinkActive="active">
+
+      Usuarios
+
+    </a>
+
+    <a
+      *ngIf="role === 'ADMIN'"
+      routerLink="/branches"
+      routerLinkActive="active">
+
+      Sucursales
+
+    </a>
+
+    <a
+      *ngIf="role === 'OPERADOR' || role === 'ADMIN'"
+      routerLink="/incidents"
+      routerLinkActive="active">
+
+      Incidencias
+
+    </a>
+
+    <a
+      routerLink="/notifications"
+      routerLinkActive="active">
+
+      Notificaciones
 
     </a>
 
@@ -35,18 +93,20 @@
 
   <div class="navbar-user">
 
-    <a routerLink="/profile">
+  <div class="user-role">
 
-      Usuario
-
-    </a>
-
-    <button class="logout-btn">
-
-      Cerrar Sesión
-
-    </button>
+    👤 {{ role }}
 
   </div>
+
+  <button
+    class="logout-btn"
+    (click)="logout()">
+
+    Cerrar sesión
+
+  </button>
+
+</div>
 
 </nav>

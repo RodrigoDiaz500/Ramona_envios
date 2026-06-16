@@ -1,0 +1,37 @@
+<div class="notifications-page">
+
+  <div class="notifications-container">
+
+    <div class="page-header">
+
+      <h1>
+        Centro de Notificaciones
+      </h1>
+
+      <p>
+        Historial de eventos generados por el sistema.
+      </p>
+
+    </div>
+
+    <div
+      class="notification-card"
+      *ngFor="let notification of notifications">
+
+      <h3>
+        {{ notification.title }}
+      </h3>
+
+      <p>
+        {{ notification.message }}
+      </p>
+
+      <span>
+        {{ notification.date }}
+      </span>
+
+    </div>
+
+  </div>
+
+</div>

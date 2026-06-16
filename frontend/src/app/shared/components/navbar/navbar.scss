@@ -1,165 +1,124 @@
 .navbar {
 
+  position: sticky;
+
+  top: 0;
+
+  z-index: 1000;
+
   height: 90px;
 
   display: flex;
+
   justify-content: space-between;
   align-items: center;
 
   padding: 0 40px;
 
-  background: transparent;
+  background:
+    rgba(255,255,255,.10);
 
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter:
+    blur(20px);
 
-  box-shadow:
-    0 2px 12px rgba(0,0,0,.08);
-
-  position: sticky;
-  top: 0;
-  z-index: 1000;
+  border-bottom:
+    1px solid rgba(255,255,255,.15);
 }
-
-/* =========================
-   LOGO
-========================= */
-
 .navbar-logo {
 
   display: flex;
   align-items: center;
+  
 }
 
 .navbar-logo img {
 
-  height: 110px;
+  height: 100px;
 
   object-fit: contain;
 }
 
-/* =========================
-   MENU
-========================= */
-
-.navbar-menu {
+.navbar-links {
 
   display: flex;
-  gap: 40px;
+
+  align-items: center;
+
+  gap: 30px;
 }
 
-.navbar-menu a {
+.navbar-links a {
 
-  position: relative;
+  color: white;
 
-  color: var(--text);
-
-  font-size: 1rem;
   font-weight: 600;
 
   transition: .3s;
 }
 
-.navbar-menu a:hover {
+.navbar-links a:hover {
 
-  color: var(--primary);
+  color: var(--secondary);
 }
 
-.active-link {
+.navbar-links a.active {
 
-  color: var(--primary);
+  color: var(--secondary);
 }
-
-.active-link::after {
-
-  content: '';
-
-  position: absolute;
-
-  bottom: -10px;
-  left: 0;
-
-  width: 100%;
-  height: 3px;
-
-  border-radius: 10px;
-
-  background: var(--secondary);
-}
-
-/* =========================
-   USER
-========================= */
 
 .navbar-user {
 
   display: flex;
   align-items: center;
-  gap: 20px;
+
+  gap: 15px;
 }
 
-.navbar-user a {
+.user-role {
 
-  color: var(--text);
+  color: white;
 
   font-weight: 600;
+
+  padding: 8px 14px;
+
+  border-radius: 999px;
+
+  background:
+    rgba(255,255,255,.15);
+
+  backdrop-filter:
+    blur(10px);
+
+  border:
+    1px solid rgba(255,255,255,.2);
 }
 
 .logout-btn {
 
   border: none;
 
+  cursor: pointer;
+
   padding: 10px 18px;
 
   border-radius: 10px;
 
-  background: var(--danger);
+  background:
+    rgba(239,68,68,.85);
 
   color: white;
 
   font-weight: 600;
 
-  cursor: pointer;
-
-  transition: .3s;
+  transition: .3s ease;
 }
 
 .logout-btn:hover {
 
-  transform: translateY(-2px);
+  background:
+    #dc2626;
 
-  opacity: .9;
-}
-
-/* =========================
-   RESPONSIVE
-========================= */
-
-@media (max-width: 900px) {
-
-  .navbar {
-
-    flex-direction: column;
-
-    height: auto;
-
-    padding: 20px;
-  }
-
-  .navbar-menu {
-
-    margin: 20px 0;
-
-    flex-wrap: wrap;
-
-    justify-content: center;
-  }
-
-  .navbar-user {
-
-    width: 100%;
-
-    justify-content: center;
-  }
-
+  transform:
+    translateY(-2px);
 }

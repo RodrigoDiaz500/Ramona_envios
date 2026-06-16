@@ -1,0 +1,75 @@
+<div class="login-page">
+
+  <div class="login-card">
+
+    <img
+      src="images/ramona_express-log.png"
+      alt="Ramona Envíos">
+
+    <h1>
+
+      Iniciar Sesión
+
+    </h1>
+
+    <div class="input-group">
+
+      <input
+        type="email"
+        placeholder=" "
+        [(ngModel)]="email">
+
+      <label>
+
+        Correo Electrónico
+
+      </label>
+
+    </div>
+
+    <div class="input-group">
+
+      <input
+        type="password"
+        placeholder=" "
+        [(ngModel)]="password">
+
+      <label>
+
+        Contraseña
+
+      </label>
+
+    </div>
+
+    <div
+      class="error"
+      *ngIf="errorMessage">
+
+      {{ errorMessage }}
+
+    </div>
+
+    <button
+      class="btn btn-primary"
+      (click)="login()">
+
+      Iniciar Sesión
+
+    </button>
+
+    <div class="demo-users">
+
+      <strong>Usuarios Demo:</strong>
+
+      <p>admin@ramona.cl / admin</p>
+
+      <p>operador@ramona.cl / operador</p>
+
+      <p>cliente@ramona.cl / cliente</p>
+
+    </div>
+
+  </div>
+
+</div>

@@ -1,0 +1,25 @@
+<div
+  class="toast"
+  [class.show]="visible">
+
+  <button
+    class="close-btn"
+    (click)="close()">
+
+    ×
+
+  </button>
+
+  <strong>
+
+    {{ title }}
+
+  </strong>
+
+  <p>
+
+    {{ message }}
+
+  </p>
+
+</div>

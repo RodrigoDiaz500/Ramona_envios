@@ -1,0 +1,113 @@
+<div class="status-page">
+
+  <div class="status-overlay">
+
+    <div class="status-card">
+
+      <h1>
+        Gestión de Estados
+      </h1>
+
+      <p>
+        Actualiza el estado de los envíos.
+      </p>
+
+      <div class="search-container">
+
+        <div class="input-group">
+
+          <input
+            type="text"
+            placeholder=" "
+            [(ngModel)]="trackingCode">
+
+          <label>
+            Código de seguimiento
+          </label>
+
+        </div>
+
+        <button
+          class="btn btn-primary">
+
+          Buscar
+
+        </button>
+
+      </div>
+
+      <div class="shipment-info">
+
+        <h2>
+          {{ shipment.code }}
+        </h2>
+
+        <div>
+          <strong>Cliente:</strong>
+          {{ shipment.customer }}
+        </div>
+
+        <div>
+          <strong>Estado Actual:</strong>
+          <span class="current-status">
+            {{ shipment.currentStatus }}
+          </span>
+        </div>
+
+      </div>
+
+      <div class="form-section">
+
+        <select
+          [(ngModel)]="newStatus">
+
+          <option value="">
+            Seleccione nuevo estado
+          </option>
+
+          <option>
+            Pendiente
+          </option>
+
+          <option>
+            En preparación
+          </option>
+
+          <option>
+            En tránsito
+          </option>
+
+          <option>
+            En sucursal destino
+          </option>
+
+          <option>
+            Entregado
+          </option>
+
+          <option>
+            Incidencia
+          </option>
+
+        </select>
+
+        <textarea
+          [(ngModel)]="observation"
+          placeholder="Observaciones">
+        </textarea>
+
+        <button
+          class="btn btn-primary save-btn"
+          (click)="updateStatus()">
+
+          Guardar Estado
+
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
