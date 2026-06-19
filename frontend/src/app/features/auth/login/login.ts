@@ -57,7 +57,7 @@ export class Login {
     );
 
     this.router.navigate([
-      '/dashboard'
+      '/shipment'
     ]);
 
     return;
@@ -75,7 +75,7 @@ export class Login {
     );
 
     this.router.navigate([
-      '/dashboard'
+      '/tracking'
     ]);
 
     return;

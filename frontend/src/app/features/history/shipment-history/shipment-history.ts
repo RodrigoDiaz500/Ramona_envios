@@ -1,10 +1,14 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-shipment-history',
   standalone: true,
-  imports: [CommonModule],
+  imports: [
+    CommonModule,
+    FormsModule
+  ],
   templateUrl: './shipment-history.html',
   styleUrl: './shipment-history.scss'
 })
@@ -37,5 +41,55 @@ export class ShipmentHistory {
     }
 
   ];
+
+  showReviewModal = false;
+
+  selectedShipment: any = null;
+
+  rating = 0;
+
+  comment = '';
+
+  showNotification = false;
+
+  notificationMessage = '';
+
+  openReview(shipment: any): void {
+
+    this.selectedShipment = shipment;
+
+    this.rating = 0;
+
+    this.comment = '';
+
+    this.showReviewModal = true;
+  }
+
+  closeReview(): void {
+
+    this.showReviewModal = false;
+  }
+
+  submitReview(): void {
+
+    console.log({
+      shipment: this.selectedShipment.code,
+      rating: this.rating,
+      comment: this.comment
+    });
+
+    this.showReviewModal = false;
+
+    this.notificationMessage =
+      'Reseña enviada correctamente';
+
+    this.showNotification = true;
+
+    setTimeout(() => {
+
+      this.showNotification = false;
+
+    }, 3000);
+  }
 
 }

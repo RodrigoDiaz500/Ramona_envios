@@ -1,84 +1,161 @@
 <div class="history-page">
 
-  <div class="history-overlay">
+  <div class="history-card">
 
-    <div class="history-card">
+    <h1>
+      Historial de Envíos
+    </h1>
 
-      <h1>
-        Historial de Envíos
-      </h1>
+    <p>
+      Consulta todos tus envíos realizados.
+    </p>
 
-      <p>
-        Consulta todos los envíos realizados.
-      </p>
+    <div class="table-container">
 
-      <div class="search-container">
+      <table class="table">
 
-        <div class="input-group">
+        <thead>
 
-          <input
-            type="text"
-            placeholder=" ">
+          <tr>
 
-          <label>
-            Buscar por código o destino
-          </label>
+            <th>Código</th>
+            <th>Estado</th>
+            <th>Origen</th>
+            <th>Destino</th>
+            <th>Fecha</th>
+            <th>Acciones</th>
 
-        </div>
+          </tr>
 
-        <button
-          class="btn btn-primary">
+        </thead>
 
-          Buscar
+        <tbody>
 
-        </button>
+          <tr *ngFor="let shipment of shipments">
 
-      </div>
+            <td>{{ shipment.code }}</td>
 
-      <div
-        class="shipment-item"
-        *ngFor="let shipment of shipments">
+            <td>
 
-        <div class="shipment-info">
+              <span
+                class="badge"
+                [ngClass]="{
+                  'badge-success': shipment.status === 'Entregado',
+                  'badge-warning': shipment.status === 'En tránsito',
+                  'badge-danger': shipment.status === 'Pendiente'
+                }">
 
-          <h3>
-            {{ shipment.code }}
-          </h3>
+                {{ shipment.status }}
 
-          <span
-            class="status">
+              </span>
 
-            {{ shipment.status }}
+            </td>
 
-          </span>
+            <td>{{ shipment.origin }}</td>
 
-          <p>
+            <td>{{ shipment.destination }}</td>
 
-            {{ shipment.origin }}
-            →
-            {{ shipment.destination }}
+            <td>{{ shipment.date }}</td>
 
-          </p>
+            <td>
 
-          <small>
+              <button
+                class="btn btn-secondary"
+                (click)="openReview(shipment)">
 
-            {{ shipment.date }}
+                Reseñar
 
-          </small>
+              </button>
 
-        </div>
+            </td>
 
-        <button
-          class="btn btn-secondary">
+          </tr>
 
-          Ver Detalle
+        </tbody>
 
-        </button>
-
-      </div>
+      </table>
 
     </div>
 
   </div>
+
+</div>
+
+<!-- MODAL RESEÑA -->
+
+<div
+  class="review-modal"
+  *ngIf="showReviewModal">
+
+  <div class="review-content">
+
+    <h2>
+      Reseñar Envío
+    </h2>
+
+    <p class="shipment-code">
+
+      {{ selectedShipment?.code }}
+
+    </p>
+
+    <div class="stars">
+
+      <span
+        *ngFor="let star of [1,2,3,4,5]"
+        (click)="rating = star">
+
+        {{ star <= rating ? '★' : '☆' }}
+
+      </span>
+
+    </div>
+
+    <textarea
+      [(ngModel)]="comment"
+      placeholder="Cuéntanos tu experiencia">
+    </textarea>
+
+    <div class="actions">
+
+      <button
+        class="btn"
+        (click)="closeReview()">
+
+        Cancelar
+
+      </button>
+
+      <button
+        class="btn btn-primary"
+        (click)="submitReview()">
+
+        Enviar
+
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+<!-- NOTIFICACIÓN -->
+
+<div
+  class="notification"
+  *ngIf="showNotification">
+
+  <span class="notification-icon">
+
+    ✓
+
+  </span>
+
+  <span>
+
+    {{ notificationMessage }}
+
+  </span>
 
 </div>

@@ -80,6 +80,12 @@
       Incidencias
 
     </a>
+    
+    <a 
+      *ngIf="role === 'OPERADOR' || role === 'ADMIN'"
+      routerLink="/reviews">
+      Reseñas
+    </a>
 
     <a
       routerLink="/notifications"

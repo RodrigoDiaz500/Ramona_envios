@@ -14,6 +14,7 @@ import { UpdateShipmentStatus } from './features/shipments/update-shipment-statu
 import { DashboardPage } from './features/dashboard/dashboard-page/dashboard-page';
 import { IncidentManagement } from './features/incidents/incident-management/incident-management';
 import { NotificationCenter } from './features/notifications/notification-center/notification-center';
+import { ReviewManagement } from './features/reviews/review-management/review-management';
 
 export const routes: Routes = [
 
@@ -83,6 +84,11 @@ export const routes: Routes = [
         path: 'notifications',
         component: NotificationCenter
       },
+
+      {
+        path: 'reviews',
+        component: ReviewManagement
+      }
 
     ]
   }
