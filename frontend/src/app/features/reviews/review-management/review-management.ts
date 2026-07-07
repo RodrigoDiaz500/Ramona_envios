@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
+
+import { Resena, ResenaService } from '../../../../core/services/resena.service';
 
 @Component({
   selector: 'app-review-management',
@@ -8,34 +10,35 @@ import { CommonModule } from '@angular/common';
   templateUrl: './review-management.html',
   styleUrl: './review-management.scss'
 })
-export class ReviewManagement {
+export class ReviewManagement implements OnInit {
 
-  reviews = [
+  reviews: Resena[] = [];
+  loading = false;
 
-    {
-      shipmentCode: 'RAM-100001',
-      user: 'Juan Pérez',
-      rating: 5,
-      comment: 'Excelente servicio, llegó antes de tiempo.',
-      date: '15/06/2026'
-    },
+  constructor(
+    private resenaService: ResenaService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
-    {
-      shipmentCode: 'RAM-100002',
-      user: 'María González',
-      rating: 4,
-      comment: 'Todo bien, aunque la entrega tardó un poco.',
-      date: '14/06/2026'
-    },
+  ngOnInit(): void {
+    this.cargarResenas();
+  }
 
-    {
-      shipmentCode: 'RAM-100003',
-      user: 'Carlos Soto',
-      rating: 2,
-      comment: 'La caja llegó dañada.',
-      date: '13/06/2026'
-    }
+  cargarResenas(): void {
+    this.loading = true;
 
-  ];
-
+    this.resenaService.listar().subscribe({
+      next: (response) => {
+        this.reviews = response.data ?? [];
+        this.loading = false;
+        this.cdr.detectChanges();
+      },
+      error: (error) => {
+        console.error('Error al cargar reseñas', error);
+        this.reviews = [];
+        this.loading = false;
+        this.cdr.detectChanges();
+      }
+    });
+  }
 }

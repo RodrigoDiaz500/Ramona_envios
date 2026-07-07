@@ -14,21 +14,55 @@
 
     </div>
 
+    <div *ngIf="loading" class="empty-state">
+
+      Cargando notificaciones...
+
+    </div>
+
     <div
+      *ngIf="!loading && notifications.length === 0"
+      class="empty-state">
+
+      No tienes notificaciones.
+
+    </div>
+
+    <div
+      *ngFor="let notification of notifications"
       class="notification-card"
-      *ngFor="let notification of notifications">
+      [class.unread]="!notification.leida"
+      (click)="marcarComoLeida(notification)">
 
-      <h3>
-        {{ notification.title }}
-      </h3>
+      <div class="notification-content">
 
-      <p>
-        {{ notification.message }}
-      </p>
+        <h3>
 
-      <span>
-        {{ notification.date }}
-      </span>
+          {{ notification.titulo }}
+
+        </h3>
+
+        <p>
+
+          {{ notification.mensaje }}
+
+        </p>
+
+        <span>
+
+          {{ notification.fechaCreacion | date:'dd/MM/yyyy HH:mm' }}
+
+        </span>
+
+      </div>
+
+      <div
+        class="notification-badge"
+        *ngIf="!notification.leida">
+
+        Nueva
+
+      </div>
 
     </div>
 

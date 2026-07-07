@@ -1,5 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
+
+import {
+  DashboardResponse,
+  DashboardService
+} from '../../../../core/services/dashboard.service';
 
 @Component({
   selector: 'app-dashboard-page',
@@ -8,51 +13,43 @@ import { CommonModule } from '@angular/common';
   templateUrl: './dashboard-page.html',
   styleUrl: './dashboard-page.scss'
 })
-export class DashboardPage {
+export class DashboardPage implements OnInit {
 
-  role: 'CLIENTE' | 'OPERADOR' | 'ADMIN' = 'ADMIN';
+  dashboard?: DashboardResponse;
+  loading = false;
 
-  stats = [
+  constructor(
+    private dashboardService: DashboardService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
-    {
-      title: 'Envíos del Mes',
-      value: 324
-    },
+  ngOnInit(): void {
+    this.cargarDashboard();
+  }
 
-    {
-      title: 'Pendientes',
-      value: 27
-    },
+  cargarDashboard(): void {
+    this.loading = true;
 
-    {
-      title: 'En Tránsito',
-      value: 98
-    },
+    this.dashboardService.obtenerResumen().subscribe({
+      next: (response) => {
+        this.dashboard = response.data;
+        this.loading = false;
+        this.cdr.detectChanges();
+      },
+      error: (error) => {
+        console.error('Error al cargar dashboard', error);
+        this.loading = false;
+        this.cdr.detectChanges();
+      }
+    });
+  }
 
-    {
-      title: 'Entregados',
-      value: 199
-    }
+  porcentaje(valor: number): number {
+    if (!this.dashboard || this.dashboard.totalSolicitudes === 0) return 0;
+    return Math.round((valor / this.dashboard.totalSolicitudes) * 100);
+  }
 
-  ];
-
-  recentShipments = [
-
-    {
-      code: 'RAM-100001',
-      status: 'En tránsito'
-    },
-
-    {
-      code: 'RAM-100002',
-      status: 'Entregado'
-    },
-
-    {
-      code: 'RAM-100003',
-      status: 'Pendiente'
-    }
-
-  ];
-
+  estadoTexto(estado: string): string {
+    return estado.replaceAll('_', ' ');
+  }
 }

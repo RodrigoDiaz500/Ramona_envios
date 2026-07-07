@@ -1,5 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
+
+import {
+  Notificacion,
+  NotificacionApiService
+} from '../../../../core/services/notificacion-api.service';
 
 @Component({
   selector: 'app-notification-center',
@@ -8,28 +13,80 @@ import { CommonModule } from '@angular/common';
   templateUrl: './notification-center.html',
   styleUrl: './notification-center.scss'
 })
-export class NotificationCenter {
+export class NotificationCenter implements OnInit {
 
-  notifications = [
+  notifications: Notificacion[] = [];
 
-    {
-      title: 'Envío Creado',
-      message: 'El envío RAM-100001 fue registrado correctamente.',
-      date: '15/06/2026'
-    },
+  loading = false;
 
-    {
-      title: 'Estado Actualizado',
-      message: 'RAM-100002 cambió a En Tránsito.',
-      date: '15/06/2026'
-    },
+  // Más adelante obtendremos este valor desde el login.
+  usuarioId = 1;
 
-    {
-      title: 'Incidencia Resuelta',
-      message: 'La incidencia del envío RAM-100003 fue resuelta.',
-      date: '14/06/2026'
+  constructor(
+    private notificacionService: NotificacionApiService,
+    private cdr: ChangeDetectorRef
+  ) {}
+
+  ngOnInit(): void {
+    this.cargarNotificaciones();
+  }
+
+  cargarNotificaciones(): void {
+
+    this.loading = true;
+
+    this.notificacionService.listarPorUsuario(this.usuarioId).subscribe({
+
+      next: (response) => {
+
+        this.notifications = response.data ?? [];
+
+        this.loading = false;
+
+        this.cdr.detectChanges();
+
+      },
+
+      error: (error) => {
+
+        console.error('Error al cargar notificaciones', error);
+
+        this.notifications = [];
+
+        this.loading = false;
+
+        this.cdr.detectChanges();
+
+      }
+
+    });
+
+  }
+
+  marcarComoLeida(notification: Notificacion): void {
+
+    if (notification.leida) {
+      return;
     }
 
-  ];
+    this.notificacionService.marcarComoLeida(notification.id).subscribe({
+
+      next: () => {
+
+        notification.leida = true;
+
+        this.cdr.detectChanges();
+
+      },
+
+      error: (error) => {
+
+        console.error('Error al marcar como leída', error);
+
+      }
+
+    });
+
+  }
 
 }

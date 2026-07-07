@@ -6,12 +6,14 @@ import cl.ramona.ramona_backend.dto.response.RolResponse;
 import cl.ramona.ramona_backend.dto.response.SolicitudEnvioResponse;
 import cl.ramona.ramona_backend.dto.response.SucursalResponse;
 import cl.ramona.ramona_backend.dto.response.UsuarioResponse;
+import cl.ramona.ramona_backend.entity.Notificacion;
 import cl.ramona.ramona_backend.entity.Seguimiento;
 import cl.ramona.ramona_backend.entity.SolicitudEnvio;
 import cl.ramona.ramona_backend.entity.Sucursal;
 import cl.ramona.ramona_backend.entity.Usuario;
 import cl.ramona.ramona_backend.enums.EstadoSolicitud;
 import cl.ramona.ramona_backend.exception.ResourceNotFoundException;
+import cl.ramona.ramona_backend.repository.NotificacionRepository;
 import cl.ramona.ramona_backend.repository.SeguimientoRepository;
 import cl.ramona.ramona_backend.repository.SolicitudEnvioRepository;
 import cl.ramona.ramona_backend.repository.SucursalRepository;
@@ -32,6 +34,7 @@ public class SolicitudEnvioServiceImpl implements SolicitudEnvioService {
     private final UsuarioRepository usuarioRepository;
     private final SucursalRepository sucursalRepository;
     private final SeguimientoRepository seguimientoRepository;
+    private final NotificacionRepository notificacionRepository;
 
     @Override
     public SolicitudEnvioResponse crearSolicitud(CrearSolicitudRequest request) {
@@ -68,6 +71,13 @@ public class SolicitudEnvioServiceImpl implements SolicitudEnvioService {
                 EstadoSolicitud.PENDIENTE_APROBACION,
                 "Solicitud creada y pendiente de aprobación",
                 usuario
+        );
+
+        crearNotificacion(
+                usuario,
+                "Solicitud creada",
+                "Tu envío " + solicitudGuardada.getCodigoSeguimiento()
+                        + " fue creado correctamente y está pendiente de aprobación."
         );
 
         return toResponse(solicitudGuardada);
@@ -124,6 +134,13 @@ public class SolicitudEnvioServiceImpl implements SolicitudEnvioService {
                 usuarioEvento
         );
 
+        crearNotificacion(
+                solicitudActualizada.getUsuario(),
+                "Estado actualizado",
+                "Tu envío " + solicitudActualizada.getCodigoSeguimiento()
+                        + " cambió a " + request.estado().name()
+        );
+
         return toResponse(solicitudActualizada);
     }
 
@@ -174,6 +191,22 @@ public class SolicitudEnvioServiceImpl implements SolicitudEnvioService {
                 .build();
 
         seguimientoRepository.save(seguimiento);
+    }
+
+    private void crearNotificacion(
+            Usuario usuario,
+            String titulo,
+            String mensaje
+    ) {
+        Notificacion notificacion = Notificacion.builder()
+                .usuario(usuario)
+                .titulo(titulo)
+                .mensaje(mensaje)
+                .leida(false)
+                .fechaCreacion(LocalDateTime.now())
+                .build();
+
+        notificacionRepository.save(notificacion);
     }
 
     private SolicitudEnvio buscarSolicitud(Long id) {

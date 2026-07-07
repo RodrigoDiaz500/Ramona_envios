@@ -35,6 +35,17 @@ public class UsuarioServiceImpl implements UsuarioService {
         return toResponse(usuario);
     }
 
+    public UsuarioResponse cambiarRolUsuario(Long id, Long roleId) {
+    Usuario usuario = buscarUsuario(id);
+
+    Rol rol = rolRepository.findById(roleId)
+            .orElseThrow(() -> new ResourceNotFoundException("Rol no encontrado"));
+
+    usuario.setRol(rol);
+
+    return toResponse(usuarioRepository.save(usuario));
+}
+
     @Override
     public UsuarioResponse crearUsuario(UsuarioRequest request) {
         if (usuarioRepository.existsByCorreo(request.correo())) {

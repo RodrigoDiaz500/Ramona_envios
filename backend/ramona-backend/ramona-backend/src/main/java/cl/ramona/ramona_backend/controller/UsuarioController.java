@@ -48,6 +48,17 @@ public class UsuarioController {
         return ApiResponse.ok("Estado del usuario actualizado correctamente", usuarioService.cambiarEstadoUsuario(id, activo));
     }
 
+    @PatchMapping("/{id}/rol")
+    public ApiResponse<UsuarioResponse> cambiarRolUsuario(
+            @PathVariable Long id,
+            @RequestParam Long roleId
+    ) {
+        return ApiResponse.ok(
+                "Rol del usuario actualizado correctamente",
+                usuarioService.cambiarRolUsuario(id, roleId)
+        );
+    }
+
     @DeleteMapping("/{id}")
     public ApiResponse<Void> eliminarUsuario(@PathVariable Long id) {
         usuarioService.eliminarUsuario(id);

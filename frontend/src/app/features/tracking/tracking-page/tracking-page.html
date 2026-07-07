@@ -41,12 +41,12 @@
         *ngIf="showResult">
 
         <h2>
-          {{ shipment.code }}
+          {{ shipment?.codigoSeguimiento }}
         </h2>
 
         <div class="status-badge">
 
-          {{ shipment.status }}
+          {{ shipment?.estado }}
 
         </div>
 
@@ -54,17 +54,25 @@
 
           <div>
             <strong>Origen:</strong>
-            {{ shipment.origin }}
+            {{ shipment?.sucursalOrigen?.ciudad }}
           </div>
 
           <div>
             <strong>Destino:</strong>
-            {{ shipment.destination }}
+            {{ shipment?.sucursalDestino?.ciudad }}
           </div>
 
           <div>
             <strong>Última actualización:</strong>
-            {{ shipment.lastUpdate }}
+            {{ seguimientos[seguimientos.length - 1]?.fechaEvento || shipment?.fechaCreacion }}
+          </div>
+
+          <div class="details" *ngIf="seguimientos.length > 0">
+            <div *ngFor="let item of seguimientos">
+              <strong>{{ item.estado }}:</strong>
+              {{ item.descripcion }} -
+              {{ item.fechaEvento | date:'short' }}
+            </div>
           </div>
 
         </div>

@@ -1,0 +1,25 @@
+<div class="dialog-backdrop" *ngIf="visible">
+  <div class="dialog-card">
+
+    <div class="dialog-icon" [ngClass]="type">
+      <span *ngIf="type === 'warning'">!</span>
+      <span *ngIf="type === 'danger'">×</span>
+      <span *ngIf="type === 'success'">✓</span>
+    </div>
+
+    <h2>{{ title }}</h2>
+
+    <p>{{ message }}</p>
+
+    <div class="dialog-actions">
+      <button class="btn-cancel" (click)="cancel()">
+        {{ cancelText }}
+      </button>
+
+      <button class="btn-confirm" [ngClass]="type" (click)="confirm()">
+        {{ confirmText }}
+      </button>
+    </div>
+
+  </div>
+</div>

@@ -4,88 +4,76 @@
 
     <div class="profile-card">
 
-      <h1>
-        Mi Perfil
-      </h1>
+      <h1>Mi Perfil</h1>
 
-      <p>
-        Actualiza tu información personal.
-      </p>
+      <p>Actualiza tu información personal.</p>
 
-      <form>
+      <div *ngIf="loading" class="empty-state">
+        Cargando perfil...
+      </div>
+
+      <form *ngIf="!loading">
 
         <div class="form-grid">
 
           <div class="input-group">
-
             <input
               type="text"
               placeholder=" "
-              [(ngModel)]="user.firstName"
-              name="firstName">
+              [(ngModel)]="user.nombre"
+              name="nombre"
+              (input)="user.nombre = soloLetras(user.nombre)">
 
-            <label>
-              Nombre
-            </label>
-
+            <label>Nombre</label>
           </div>
 
           <div class="input-group">
-
             <input
               type="text"
               placeholder=" "
-              [(ngModel)]="user.lastName"
-              name="lastName">
+              [(ngModel)]="user.apellido"
+              name="apellido"
+              (input)="user.apellido = soloLetras(user.apellido)">
 
-            <label>
-              Apellido
-            </label>
-
+            <label>Apellido</label>
           </div>
 
           <div class="input-group">
-
             <input
               type="email"
               placeholder=" "
-              [(ngModel)]="user.email"
-              name="email">
+              [(ngModel)]="user.correo"
+              name="correo">
 
-            <label>
-              Correo Electrónico
-            </label>
-
+            <label>Correo Electrónico</label>
           </div>
 
           <div class="input-group">
-
             <input
               type="text"
               placeholder=" "
-              [(ngModel)]="user.phone"
-              name="phone">
+              [(ngModel)]="user.telefono"
+              name="telefono"
+              (input)="user.telefono = formatearTelefono(user.telefono)">
 
-            <label>
-              Teléfono
-            </label>
-
+            <label>Teléfono</label>
           </div>
 
         </div>
 
         <div class="input-group">
-
           <input
             type="text"
             placeholder=" "
-            [(ngModel)]="user.address"
-            name="address">
+            [(ngModel)]="user.direccion"
+            name="direccion">
 
-          <label>
-            Dirección
-          </label>
+          <label>Dirección</label>
+        </div>
 
+        <div class="profile-info" *ngIf="usuarioActual">
+          <span>Rol actual</span>
+          <strong>{{ usuarioActual.rol.nombre }}</strong>
         </div>
 
         <div class="button-container">
@@ -93,7 +81,8 @@
           <button
             type="button"
             class="btn btn-primary"
-            (click)="saveProfile()">
+            (click)="saveProfile()"
+            [disabled]="loading">
 
             Guardar Cambios
 

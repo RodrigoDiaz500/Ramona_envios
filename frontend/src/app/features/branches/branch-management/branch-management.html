@@ -7,21 +7,24 @@
       <div class="header">
 
         <div>
-
-          <h1>
-            Gestión de Sucursales
-          </h1>
-
-          <p>
-            Administra las sucursales del sistema.
-          </p>
-
+          <h1>Gestión de Sucursales</h1>
+          <p>Administra las sucursales del sistema.</p>
         </div>
 
-        <button class="btn btn-primary">
+        <button
+          class="btn btn-primary"
+          (click)="abrirNuevaSucursal()">
           Nueva Sucursal
         </button>
 
+      </div>
+
+      <div *ngIf="loading" class="empty-state">
+        Cargando sucursales...
+      </div>
+
+      <div *ngIf="!loading && branches.length === 0" class="empty-state">
+        No hay sucursales para mostrar.
       </div>
 
       <div
@@ -30,20 +33,18 @@
 
         <div class="branch-info">
 
-          <h3>
-            {{ branch.name }}
-          </h3>
+          <h3>{{ branch.nombre }}</h3>
 
-          <p>
-            {{ branch.city }}
-          </p>
+          <p>{{ branch.direccion }}</p>
+
+          <p>{{ branch.ciudad }} · {{ branch.telefono }}</p>
 
           <span
             class="status-badge"
-            [class.active]="branch.active"
-            [class.inactive]="!branch.active">
+            [class.active]="branch.habilitada"
+            [class.inactive]="!branch.habilitada">
 
-            {{ branch.active ? 'Activa' : 'Inactiva' }}
+            {{ branch.habilitada ? 'Activa' : 'Inactiva' }}
 
           </span>
 
@@ -51,24 +52,24 @@
 
         <div class="actions">
 
-          <button class="btn btn-primary">
+          <button
+            class="btn btn-primary"
+            (click)="abrirEditar(branch)">
             Editar
           </button>
 
           <button
-            *ngIf="branch.active"
-            class="btn btn-danger">
-
+            *ngIf="branch.habilitada"
+            class="btn btn-danger"
+            (click)="solicitarCambioEstado(branch)">
             Deshabilitar
-
           </button>
 
           <button
-            *ngIf="!branch.active"
-            class="btn btn-secondary">
-
+            *ngIf="!branch.habilitada"
+            class="btn btn-secondary"
+            (click)="solicitarCambioEstado(branch)">
             Activar
-
           </button>
 
         </div>
@@ -80,3 +81,58 @@
   </div>
 
 </div>
+
+<div class="edit-modal" *ngIf="showModal">
+
+  <div class="edit-content">
+
+    <div class="modal-header">
+      <h2>{{ selectedBranch ? 'Editar Sucursal' : 'Nueva Sucursal' }}</h2>
+      <button (click)="cerrarModal()">×</button>
+    </div>
+
+    <div class="form-grid">
+
+      <div class="input-group">
+        <input type="text" placeholder=" " [(ngModel)]="form.nombre" name="nombre">
+        <label>Nombre</label>
+      </div>
+
+      <div class="input-group">
+        <input type="text" placeholder=" " [(ngModel)]="form.ciudad" name="ciudad">
+        <label>Ciudad</label>
+      </div>
+
+      <div class="input-group full">
+        <input type="text" placeholder=" " [(ngModel)]="form.direccion" name="direccion">
+        <label>Dirección</label>
+      </div>
+
+      <div class="input-group full">
+        <input type="text" placeholder=" " [(ngModel)]="form.telefono" name="telefono">
+        <label>Teléfono</label>
+      </div>
+
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn btn-secondary" (click)="cerrarModal()">Cancelar</button>
+      <button class="btn btn-primary" (click)="guardarSucursal()">
+        {{ selectedBranch ? 'Guardar cambios' : 'Crear sucursal' }}
+      </button>
+    </div>
+
+  </div>
+
+</div>
+
+<app-confirmation-dialog
+  [visible]="showConfirmDialog"
+  [title]="confirmTitle"
+  [message]="confirmMessage"
+  [confirmText]="confirmText"
+  cancelText="Cancelar"
+  [type]="confirmType"
+  (confirmed)="confirmarAccion()"
+  (cancelled)="cerrarConfirmacion()">
+</app-confirmation-dialog>

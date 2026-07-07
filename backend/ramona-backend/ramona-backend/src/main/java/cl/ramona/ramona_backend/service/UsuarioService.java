@@ -17,5 +17,7 @@ public interface UsuarioService {
 
     UsuarioResponse cambiarEstadoUsuario(Long id, Boolean activo);
 
+    UsuarioResponse cambiarRolUsuario(Long id, Long roleId);
+
     void eliminarUsuario(Long id);
 }

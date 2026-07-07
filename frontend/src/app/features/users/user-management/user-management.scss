@@ -112,3 +112,90 @@
 
   gap: 10px;
 }
+
+
+.edit-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.55);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+  padding: 30px;
+}
+
+.edit-content {
+  width: 100%;
+  max-width: 760px;
+  background: rgba(255,255,255,.92);
+  backdrop-filter: blur(12px);
+  border-radius: 24px;
+  padding: 35px;
+  box-shadow: 0 15px 45px rgba(0,0,0,.25);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 25px;
+}
+
+.modal-header h2 {
+  color: var(--primary);
+  margin: 0;
+}
+
+.modal-header button {
+  border: none;
+  background: transparent;
+  font-size: 2rem;
+  cursor: pointer;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+}
+
+.form-grid .full {
+  grid-column: span 2;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 25px;
+}
+
+@media (max-width: 700px) {
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-grid .full {
+    grid-column: span 1;
+  }
+}
+
+.status-badge {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  font-size: .75rem;
+  font-weight: 700;
+}
+
+.status-badge.active {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.status-badge.inactive {
+  background: #fee2e2;
+  color: #991b1b;
+}

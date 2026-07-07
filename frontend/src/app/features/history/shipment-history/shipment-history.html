@@ -1,114 +1,95 @@
 <div class="history-page">
-
   <div class="history-card">
 
-    <h1>
-      Historial de Envíos
-    </h1>
+    <h1>Historial de Envíos</h1>
+    <p>Consulta el estado de tus envíos registrados.</p>
 
-    <p>
-      Consulta todos tus envíos realizados.
-    </p>
-
-    <div class="table-container">
-
-      <table class="table">
-
-        <thead>
-
-          <tr>
-
-            <th>Código</th>
-            <th>Estado</th>
-            <th>Origen</th>
-            <th>Destino</th>
-            <th>Fecha</th>
-            <th>Acciones</th>
-
-          </tr>
-
-        </thead>
-
-        <tbody>
-
-          <tr *ngFor="let shipment of shipments">
-
-            <td>{{ shipment.code }}</td>
-
-            <td>
-
-              <span
-                class="badge"
-                [ngClass]="{
-                  'badge-success': shipment.status === 'Entregado',
-                  'badge-warning': shipment.status === 'En tránsito',
-                  'badge-danger': shipment.status === 'Pendiente'
-                }">
-
-                {{ shipment.status }}
-
-              </span>
-
-            </td>
-
-            <td>{{ shipment.origin }}</td>
-
-            <td>{{ shipment.destination }}</td>
-
-            <td>{{ shipment.date }}</td>
-
-            <td>
-
-              <button
-                class="btn btn-secondary"
-                (click)="openReview(shipment)">
-
-                Reseñar
-
-              </button>
-
-            </td>
-
-          </tr>
-
-        </tbody>
-
-      </table>
-
+    <div *ngIf="loading" class="empty-state">
+      Cargando envíos...
     </div>
 
-  </div>
+    <div *ngIf="!loading && shipments.length === 0" class="empty-state">
+      No tienes envíos registrados.
+    </div>
 
+    <div class="shipment-grid" *ngIf="!loading && shipments.length > 0">
+
+      <div class="shipment-item" *ngFor="let shipment of shipments">
+
+        <div class="shipment-header">
+          <div>
+            <span class="label">Código</span>
+            <h3>{{ shipment.codigoSeguimiento }}</h3>
+          </div>
+
+          <span class="badge" [ngClass]="estadoClase(shipment.estado)">
+            {{ formatearEstado(shipment.estado) }}
+          </span>
+        </div>
+
+        <div class="shipment-info">
+          <div>
+            <span>Origen</span>
+            <strong>{{ shipment.sucursalOrigen.ciudad }}</strong>
+          </div>
+
+          <div>
+            <span>Destino</span>
+            <strong>{{ shipment.sucursalDestino.ciudad }}</strong>
+          </div>
+
+          <div>
+            <span>Peso</span>
+            <strong>{{ shipment.peso }} kg</strong>
+          </div>
+
+          <div>
+            <span>Valor declarado</span>
+            <strong>${{ shipment.valorDeclarado }}</strong>
+          </div>
+        </div>
+
+        <div class="progress-line">
+          <div [class.done]="progreso(shipment.estado) >= 1"></div>
+          <div [class.done]="progreso(shipment.estado) >= 2"></div>
+          <div [class.done]="progreso(shipment.estado) >= 3"></div>
+          <div [class.done]="progreso(shipment.estado) >= 4"></div>
+        </div>
+
+        <div class="shipment-footer">
+          <span>
+            Destinatario: {{ shipment.destinatarioNombre }}
+          </span>
+
+          <button
+            class="btn-review"
+            [disabled]="!puedeResenar(shipment)"
+            (click)="openReview(shipment)">
+            {{ puedeResenar(shipment) ? 'Reseñar' : 'Reseña disponible al entregar' }}
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
 </div>
 
-<!-- MODAL RESEÑA -->
-
-<div
-  class="review-modal"
-  *ngIf="showReviewModal">
-
+<div class="review-modal" *ngIf="showReviewModal">
   <div class="review-content">
 
-    <h2>
-      Reseñar Envío
-    </h2>
+    <h2>Reseñar Envío</h2>
 
     <p class="shipment-code">
-
-      {{ selectedShipment?.code }}
-
+      {{ selectedShipment?.codigoSeguimiento }}
     </p>
 
     <div class="stars">
-
       <span
         *ngFor="let star of [1,2,3,4,5]"
         (click)="rating = star">
-
         {{ star <= rating ? '★' : '☆' }}
-
       </span>
-
     </div>
 
     <textarea
@@ -117,45 +98,14 @@
     </textarea>
 
     <div class="actions">
-
-      <button
-        class="btn"
-        (click)="closeReview()">
-
-        Cancelar
-
-      </button>
-
-      <button
-        class="btn btn-primary"
-        (click)="submitReview()">
-
-        Enviar
-
-      </button>
-
+      <button class="btn" (click)="closeReview()">Cancelar</button>
+      <button class="btn btn-primary" (click)="submitReview()">Enviar</button>
     </div>
 
   </div>
-
 </div>
 
-<!-- NOTIFICACIÓN -->
-
-<div
-  class="notification"
-  *ngIf="showNotification">
-
-  <span class="notification-icon">
-
-    ✓
-
-  </span>
-
-  <span>
-
-    {{ notificationMessage }}
-
-  </span>
-
+<div class="notification" *ngIf="showNotification">
+  <span class="notification-icon">✓</span>
+  <span>{{ notificationMessage }}</span>
 </div>

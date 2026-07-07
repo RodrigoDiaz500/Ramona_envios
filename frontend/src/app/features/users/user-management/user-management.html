@@ -4,13 +4,9 @@
 
     <div class="users-card">
 
-      <h1>
-        Gestión de Usuarios
-      </h1>
+      <h1>Gestión de Usuarios</h1>
 
-      <p>
-        Administra usuarios del sistema.
-      </p>
+      <p>Administra usuarios del sistema.</p>
 
       <div class="search-container">
 
@@ -21,60 +17,65 @@
             placeholder=" "
             [(ngModel)]="searchText">
 
-          <label>
-            Buscar usuario
-          </label>
+          <label>Buscar usuario</label>
 
         </div>
 
       </div>
 
+      <div *ngIf="loading" class="empty-state">
+        Cargando usuarios...
+      </div>
+
+      <div *ngIf="!loading && usuariosFiltrados().length === 0" class="empty-state">
+        No hay usuarios para mostrar.
+      </div>
+
       <div
         class="user-item"
-        *ngFor="let user of users">
+        *ngFor="let user of usuariosFiltrados()">
 
         <div class="user-info">
 
-          <h3>
-            {{ user.name }}
-          </h3>
+          <h3>{{ user.nombre }} {{ user.apellido }}</h3>
+
+          <span class="role-badge">
+            {{ user.rol.nombre }}
+          </span>
 
           <span
-            class="role-badge">
+            class="status-badge"
+            [class.active]="user.activo"
+            [class.inactive]="!user.activo">
 
-            {{ user.role }}
+            {{ user.activo ? 'Activo' : 'Deshabilitado' }}
 
           </span>
 
-          <p>
-            {{ user.email }}
-          </p>
+          <p>{{ user.correo }}</p>
 
         </div>
 
         <div class="actions">
 
           <button
-            class="btn btn-primary">
-
+            class="btn btn-primary"
+            (click)="abrirEditar(user)">
             Editar
-
           </button>
 
           <button
-            *ngIf="user.active"
-            class="btn btn-danger">
-
+            *ngIf="user.activo"
+            class="btn btn-danger"
+            (click)="solicitarCambioEstado(user)">
             Deshabilitar
-
           </button>
 
           <button
-            *ngIf="!user.active"
-            class="btn btn-secondary">
-
+            *ngIf="!user.activo"
+            class="btn btn-secondary"
+            (click)="solicitarCambioEstado(user)">
             Activar
-
           </button>
 
         </div>
@@ -86,3 +87,69 @@
   </div>
 
 </div>
+
+<div class="edit-modal" *ngIf="showEditModal && selectedUser">
+
+  <div class="edit-content">
+
+    <div class="modal-header">
+      <h2>Editar Usuario</h2>
+      <button (click)="cerrarEditar()">×</button>
+    </div>
+
+    <div class="form-grid">
+
+      <div class="input-group">
+        <input type="text" placeholder=" " [(ngModel)]="editForm.nombre" name="nombre">
+        <label>Nombre</label>
+      </div>
+
+      <div class="input-group">
+        <input type="text" placeholder=" " [(ngModel)]="editForm.apellido" name="apellido">
+        <label>Apellido</label>
+      </div>
+
+      <div class="input-group">
+        <input type="email" placeholder=" " [(ngModel)]="editForm.correo" name="correo">
+        <label>Correo</label>
+      </div>
+
+      <div class="input-group">
+        <input type="text" placeholder=" " [(ngModel)]="editForm.telefono" name="telefono">
+        <label>Teléfono</label>
+      </div>
+
+      <div class="input-group full">
+        <input type="text" placeholder=" " [(ngModel)]="editForm.direccion" name="direccion">
+        <label>Dirección</label>
+      </div>
+
+      <div class="input-group" *ngIf="esAdmin">
+        <select [(ngModel)]="editForm.roleId" name="roleId">
+          <option *ngFor="let rol of roles" [value]="rol.id">
+            {{ rol.nombre }}
+          </option>
+        </select>
+      </div>
+
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn btn-secondary" (click)="cerrarEditar()">Cancelar</button>
+      <button class="btn btn-primary" (click)="guardarCambios()">Guardar cambios</button>
+    </div>
+
+  </div>
+
+</div>
+
+<app-confirmation-dialog
+  [visible]="showConfirmDialog"
+  [title]="confirmTitle"
+  [message]="confirmMessage"
+  [confirmText]="confirmText"
+  cancelText="Cancelar"
+  [type]="confirmType"
+  (confirmed)="confirmarAccion()"
+  (cancelled)="cerrarConfirmacion()">
+</app-confirmation-dialog>

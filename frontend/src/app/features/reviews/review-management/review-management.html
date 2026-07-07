@@ -2,13 +2,17 @@
 
   <div class="reviews-card">
 
-    <h1>
-      Gestión de Reseñas
-    </h1>
+    <h1>Gestión de Reseñas</h1>
 
-    <p>
-      Opiniones y evaluaciones realizadas por los clientes.
-    </p>
+    <p>Opiniones y evaluaciones realizadas por los clientes.</p>
+
+    <div *ngIf="loading" class="empty-state">
+      Cargando reseñas...
+    </div>
+
+    <div *ngIf="!loading && reviews.length === 0" class="empty-state">
+      No hay reseñas registradas.
+    </div>
 
     <div
       class="review-item"
@@ -17,42 +21,27 @@
       <div class="review-header">
 
         <div>
-
-          <h3>
-            {{ review.shipmentCode }}
-          </h3>
+          <h3>{{ review.codigoSeguimiento }}</h3>
 
           <span class="user">
-
-            {{ review.user }}
-
+            {{ review.usuarioNombre }}
           </span>
-
         </div>
 
         <span class="date">
-
-          {{ review.date }}
-
+          {{ review.fechaCreacion | date:'short' }}
         </span>
 
       </div>
 
       <div class="stars">
-
-        <span
-          *ngFor="let star of [1,2,3,4,5]">
-
-          {{ star <= review.rating ? '★' : '☆' }}
-
+        <span *ngFor="let star of [1,2,3,4,5]">
+          {{ star <= review.calificacion ? '★' : '☆' }}
         </span>
-
       </div>
 
       <p class="comment">
-
-        {{ review.comment }}
-
+        {{ review.comentario }}
       </p>
 
     </div>

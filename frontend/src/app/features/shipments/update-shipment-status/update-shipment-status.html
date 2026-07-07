@@ -1,113 +1,184 @@
-<div class="status-page">
+<div class="operations-page">
+  <div class="operations-card">
 
-  <div class="status-overlay">
-
-    <div class="status-card">
-
-      <h1>
-        Gestión de Estados
-      </h1>
-
-      <p>
-        Actualiza el estado de los envíos.
-      </p>
-
-      <div class="search-container">
-
-        <div class="input-group">
-
-          <input
-            type="text"
-            placeholder=" "
-            [(ngModel)]="trackingCode">
-
-          <label>
-            Código de seguimiento
-          </label>
-
-        </div>
-
-        <button
-          class="btn btn-primary">
-
-          Buscar
-
-        </button>
-
+    <div class="header">
+      <div>
+        <h1>Centro de Operaciones</h1>
+        <p>Gestiona solicitudes, aprobación y avance de envíos.</p>
       </div>
 
-      <div class="shipment-info">
+      <button class="refresh-btn" (click)="cargarSolicitudes()">
+        Actualizar
+      </button>
+    </div>
 
-        <h2>
-          {{ shipment.code }}
-        </h2>
+    <div class="search-box">
+      <input
+        type="text"
+        placeholder="Buscar por código, estado o destinatario..."
+        [(ngModel)]="search"
+        (input)="filtrar()">
+    </div>
 
-        <div>
-          <strong>Cliente:</strong>
-          {{ shipment.customer }}
+    <div *ngIf="loading" class="empty">
+      Cargando solicitudes...
+    </div>
+
+    <div class="kanban" *ngIf="!loading">
+      <div class="column" *ngFor="let estado of estados">
+
+        <div class="column-header">
+          <h2>{{ formatearEstado(estado) }}</h2>
+          <span>{{ porEstado(estado).length }}</span>
         </div>
 
-        <div>
-          <strong>Estado Actual:</strong>
-          <span class="current-status">
-            {{ shipment.currentStatus }}
-          </span>
+        <div class="shipment-card" *ngFor="let shipment of porEstado(estado)">
+          <h3>{{ shipment.codigoSeguimiento }}</h3>
+
+          <div class="route">
+            {{ shipment.sucursalOrigen.ciudad }}
+            <span>→</span>
+            {{ shipment.sucursalDestino.ciudad }}
+          </div>
+
+          <div class="info">
+            <p><strong>Destinatario:</strong> {{ shipment.destinatarioNombre }}</p>
+            <p><strong>Peso:</strong> {{ shipment.peso }} kg</p>
+            <p><strong>Valor:</strong> ${{ shipment.valorDeclarado }}</p>
+          </div>
+
+          <div class="actions">
+            <button class="detail" (click)="abrirDetalle(shipment)">
+              Ver detalle
+            </button>
+
+            <button
+              *ngIf="shipment.estado === 'PENDIENTE_APROBACION'"
+              class="approve"
+              (click)="cambiarEstado(shipment, 'APROBADO')">
+              Aprobar
+            </button>
+
+            <button
+              *ngIf="shipment.estado === 'PENDIENTE_APROBACION'"
+              class="reject"
+              (click)="cambiarEstado(shipment, 'RECHAZADO')">
+              Rechazar
+            </button>
+
+            <button
+              *ngIf="siguienteEstado(shipment.estado) as next"
+              class="next"
+              (click)="cambiarEstado(shipment, next)">
+              Pasar a {{ formatearEstado(next) }}
+            </button>
+          </div>
         </div>
 
       </div>
-
-      <div class="form-section">
-
-        <select
-          [(ngModel)]="newStatus">
-
-          <option value="">
-            Seleccione nuevo estado
-          </option>
-
-          <option>
-            Pendiente
-          </option>
-
-          <option>
-            En preparación
-          </option>
-
-          <option>
-            En tránsito
-          </option>
-
-          <option>
-            En sucursal destino
-          </option>
-
-          <option>
-            Entregado
-          </option>
-
-          <option>
-            Incidencia
-          </option>
-
-        </select>
-
-        <textarea
-          [(ngModel)]="observation"
-          placeholder="Observaciones">
-        </textarea>
-
-        <button
-          class="btn btn-primary save-btn"
-          (click)="updateStatus()">
-
-          Guardar Estado
-
-        </button>
-
-      </div>
-
     </div>
 
   </div>
+</div>
 
+<div class="detail-modal" *ngIf="showDetailModal && selectedShipment">
+  <div class="detail-content">
+
+    <div class="detail-header">
+      <div>
+        <h2>{{ selectedShipment.codigoSeguimiento }}</h2>
+        <p>{{ formatearEstado(selectedShipment.estado) }}</p>
+      </div>
+
+      <button class="close-btn" (click)="cerrarDetalle()">×</button>
+    </div>
+
+    <div class="detail-grid">
+      <div>
+        <span>Origen</span>
+        <strong>{{ selectedShipment.sucursalOrigen.ciudad }}</strong>
+      </div>
+
+      <div>
+        <span>Destino</span>
+        <strong>{{ selectedShipment.sucursalDestino.ciudad }}</strong>
+      </div>
+
+      <div>
+        <span>Destinatario</span>
+        <strong>{{ selectedShipment.destinatarioNombre }}</strong>
+      </div>
+
+      <div>
+        <span>Teléfono</span>
+        <strong>{{ selectedShipment.destinatarioTelefono }}</strong>
+      </div>
+
+      <div>
+        <span>Peso</span>
+        <strong>{{ selectedShipment.peso }} kg</strong>
+      </div>
+
+      <div>
+        <span>Valor declarado</span>
+        <strong>${{ selectedShipment.valorDeclarado }}</strong>
+      </div>
+
+      <div>
+        <span>Estado actual</span>
+        <strong>{{ formatearEstado(selectedShipment.estado) }}</strong>
+      </div>
+
+      <div>
+        <span>Creación</span>
+        <strong>{{ selectedShipment.fechaCreacion | date:'short' }}</strong>
+      </div>
+    </div>
+
+    <div class="modal-actions">
+      <button
+        *ngIf="selectedShipment.estado === 'PENDIENTE_APROBACION'"
+        class="approve"
+        (click)="cambiarEstado(selectedShipment, 'APROBADO')">
+        Aprobar
+      </button>
+
+      <button
+        *ngIf="selectedShipment.estado === 'PENDIENTE_APROBACION'"
+        class="reject"
+        (click)="cambiarEstado(selectedShipment, 'RECHAZADO')">
+        Rechazar
+      </button>
+
+      <button
+        *ngIf="siguienteEstado(selectedShipment.estado) as next"
+        class="next"
+        (click)="cambiarEstado(selectedShipment, next)">
+        Pasar a {{ formatearEstado(next) }}
+      </button>
+    </div>
+
+    <h3>Timeline del envío</h3>
+
+    <div *ngIf="loadingTimeline" class="empty">
+      Cargando seguimiento...
+    </div>
+
+    <div class="timeline" *ngIf="!loadingTimeline && seguimientos.length > 0">
+      <div class="timeline-item" *ngFor="let item of seguimientos">
+        <div class="dot"></div>
+
+        <div>
+          <strong>{{ formatearEstado(item.estado) }}</strong>
+          <p>{{ item.descripcion }}</p>
+          <small>{{ item.fechaEvento | date:'short' }}</small>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="!loadingTimeline && seguimientos.length === 0" class="empty">
+      Este envío aún no tiene eventos de seguimiento.
+    </div>
+
+  </div>
 </div>

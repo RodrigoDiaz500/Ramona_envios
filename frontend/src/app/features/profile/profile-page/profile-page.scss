@@ -73,3 +73,26 @@
   width: 200px;
 }
 
+.empty-state {
+  text-align: center;
+  padding: 30px;
+  color: var(--text-light);
+}
+
+.profile-info {
+  margin-top: 20px;
+  background: rgba(255,255,255,.8);
+  border-radius: 14px;
+  padding: 16px;
+}
+
+.profile-info span {
+  display: block;
+  color: var(--text-light);
+  font-size: .85rem;
+  margin-bottom: 6px;
+}
+
+.profile-info strong {
+  color: var(--primary);
+}

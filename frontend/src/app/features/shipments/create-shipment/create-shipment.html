@@ -1,125 +1,144 @@
 <div class="shipment-page">
-
   <div class="shipment-container">
-
     <div class="shipment-card">
 
-      <h1>
-        Crear Envío
-      </h1>
+      <h1>Crear Envío</h1>
 
-      <p>
-        Registra una nueva solicitud de envío.
-      </p>
+      <p>Registra una nueva solicitud de envío.</p>
 
-      <form>
+      <form (ngSubmit)="createShipment()">
 
         <div class="form-grid">
 
           <div class="input-group">
-
             <input
               type="text"
-              placeholder=" ">
+              placeholder=" "
+              [(ngModel)]="senderName"
+              name="senderName"
+              (input)="senderName = soloLetras(senderName)">
 
             <label>
-              Nombre Remitente
+              Nombre Remitente <span class="required">*</span>
             </label>
-
           </div>
 
           <div class="input-group">
-
             <input
               type="text"
-              placeholder=" ">
+              placeholder=" "
+              [(ngModel)]="receiverName"
+              name="receiverName"
+              (input)="receiverName = soloLetras(receiverName)">
 
             <label>
-              Nombre Destinatario
+              Nombre Destinatario <span class="required">*</span>
             </label>
-
           </div>
 
           <div class="input-group">
-
             <input
               type="text"
-              placeholder=" ">
+              placeholder=" "
+              [(ngModel)]="receiverRutDni"
+              name="receiverRutDni"
+              (input)="receiverRutDni = formatearRut(receiverRutDni)">
 
             <label>
-              Teléfono Destinatario
+              RUT / DNI Destinatario <span class="required">*</span>
             </label>
+          </div>
 
+          <div class="input-group">
+            <input
+              type="text"
+              placeholder=" "
+              [(ngModel)]="receiverPhone"
+              name="receiverPhone"
+              (input)="receiverPhone = formatearTelefono(receiverPhone)">
+
+            <label>
+              Teléfono Destinatario <span class="required">*</span>
+            </label>
           </div>
 
           <div class="input-group">
 
-            <select>
-  <option value="" selected disabled>
-    Seleccione sucursal origen
-  </option>
-  <option>Sucursal Central</option>
-  <option>San Antonio</option>
-  <option>Valparaíso</option>
-</select>
 
+            <select [(ngModel)]="originBranch" name="originBranch">
+              <option value="" disabled>Seleccione sucursal origen</option>
+
+              <option
+                *ngFor="let branch of branches"
+                [value]="branch.id">
+                {{ branch.nombre }} - {{ branch.ciudad }}
+              </option>
+            </select>
           </div>
 
           <div class="input-group">
 
-            <select>
-  <option value="" selected disabled>
-    Seleccione sucursal destino
-  </option>
-  <option>San Antonio</option>
-  <option>Valparaíso</option>
-  <option>Santiago</option>
-</select>
+
+            <select [(ngModel)]="destinationBranch" name="destinationBranch">
+              <option value="" disabled>Seleccione sucursal destino</option>
+
+              <option
+                *ngFor="let branch of branches"
+                [value]="branch.id">
+                {{ branch.nombre }} - {{ branch.ciudad }}
+              </option>
+            </select>
           </div>
 
           <div class="input-group">
-
             <input
               type="number"
-              placeholder=" ">
+              placeholder=" "
+              [(ngModel)]="weight"
+              name="weight">
 
             <label>
-              Peso (kg)
+              Peso (kg) <span class="required">*</span>
             </label>
+          </div>
 
+          <div class="input-group">
+            <input
+              type="number"
+              placeholder=" "
+              [(ngModel)]="declaredValue"
+              name="declaredValue">
+
+            <label>
+              Valor Declarado <span class="required">*</span>
+            </label>
           </div>
 
         </div>
 
         <div class="textarea-group">
-
-          <label>
-            Observaciones
-          </label>
+          <label>Observaciones</label>
 
           <textarea
-            rows="4">
-
+            rows="4"
+            [(ngModel)]="observations"
+            name="observations">
           </textarea>
-
         </div>
 
         <div class="button-container">
-
           <button
             class="btn btn-primary"
-            (click)="createShipment()">
+            type="submit"
+            [disabled]="loading">
 
-            Crear Envío
+            {{ loading ? 'Creando...' : 'Crear Envío' }}
 
           </button>
-
         </div>
 
       </form>
 
     </div>
-
   </div>
-
 </div>

@@ -1,5 +1,8 @@
 package cl.ramona.ramona_backend.dto.response;
 
+import java.math.BigDecimal;
+import java.util.List;
+
 public record DashboardResponse(
         long totalSolicitudes,
         long pendientes,
@@ -9,6 +12,9 @@ public record DashboardResponse(
         long entregadas,
         long rechazadas,
         long totalUsuarios,
-        long totalSucursales
+        long totalSucursales,
+        long incidenciasAbiertas,
+        BigDecimal promedioResenas,
+        List<UltimaSolicitudResponse> ultimasSolicitudes
 ) {
 }

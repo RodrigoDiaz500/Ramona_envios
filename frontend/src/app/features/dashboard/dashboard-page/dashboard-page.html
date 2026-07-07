@@ -3,66 +3,156 @@
   <div class="dashboard-container">
 
     <div class="dashboard-header">
-
-      <h1>
-        Dashboard
-      </h1>
-
-      <p>
-        Bienvenido a Ramona Envíos
-      </p>
-
-    </div>
-
-    <div class="stats-grid">
-
-      <div
-        class="stat-card"
-        *ngFor="let stat of stats">
-
-        <h2>
-          {{ stat.value }}
-        </h2>
-
-        <span>
-          {{ stat.title }}
-        </span>
-
+      <div>
+        <h1>Dashboard Operacional</h1>
+        <p>Resumen general de Ramona Express.</p>
       </div>
 
+      <button (click)="cargarDashboard()">
+        Actualizar
+      </button>
     </div>
 
-    <div class="dashboard-section">
+    <div *ngIf="loading" class="loading">
+      Cargando dashboard...
+    </div>
 
-      <h2>
-        Últimos Envíos
-      </h2>
+    <ng-container *ngIf="!loading && dashboard">
 
-      <div class="shipment-list">
+      <div class="stats-grid">
 
-        <div
-          class="shipment-item"
-          *ngFor="let shipment of recentShipments">
+        <div class="stat-card primary">
+          <span class="material-symbols-outlined">inventory_2</span>
+          <h2>{{ dashboard.totalSolicitudes }}</h2>
+          <p>Total envíos</p>
+        </div>
 
-          <div>
+        <div class="stat-card warning">
+          <span class="material-symbols-outlined">hourglass_top</span>
+          <h2>{{ dashboard.enPreparacion}}</h2>
+          <p>En preparación</p>
+        </div>
 
-            <strong>
-              {{ shipment.code }}
-            </strong>
+        <div class="stat-card info">
+          <span class="material-symbols-outlined">local_shipping</span>
+          <h2>{{ dashboard.enTransito }}</h2>
+          <p>En tránsito</p>
+        </div>
 
-          </div>
+        <div class="stat-card success">
+          <span class="material-symbols-outlined">check_circle</span>
+          <h2>{{ dashboard.entregadas }}</h2>
+          <p>Entregadas</p>
+        </div>
 
-          <div>
+        <div class="stat-card danger">
+          <span class="material-symbols-outlined">report</span>
+          <h2>{{ dashboard.incidenciasAbiertas }}</h2>
+          <p>Incidencias abiertas</p>
+        </div>
 
-            {{ shipment.status }}
-
-          </div>
-
+        <div class="stat-card secondary">
+          <span class="material-symbols-outlined">star</span>
+          <h2>{{ dashboard.promedioResenas || 0 }}</h2>
+          <p>Promedio reseñas</p>
         </div>
 
       </div>
 
-    </div>
+      <div class="dashboard-grid">
+
+        <div class="panel">
+          <h2>Distribución de Estados</h2>
+
+          <div class="progress-item">
+            <div>
+              <span>En preparación</span>
+              <strong>{{ porcentaje(dashboard.enPreparacion) }}%</strong>
+            </div>
+            <div class="bar"><span [style.width.%]="porcentaje(dashboard.enPreparacion)"></span></div>
+          </div>
+
+          <div class="progress-item">
+            <div>
+              <span>Aprobadas</span>
+              <strong>{{ porcentaje(dashboard.aprobadas) }}%</strong>
+            </div>
+            <div class="bar"><span [style.width.%]="porcentaje(dashboard.aprobadas)"></span></div>
+          </div>
+
+          <div class="progress-item">
+            <div>
+              <span>En preparación</span>
+              <strong>{{ porcentaje(dashboard.enPreparacion) }}%</strong>
+            </div>
+            <div class="bar"><span [style.width.%]="porcentaje(dashboard.enPreparacion)"></span></div>
+          </div>
+
+          <div class="progress-item">
+            <div>
+              <span>En tránsito</span>
+              <strong>{{ porcentaje(dashboard.enTransito) }}%</strong>
+            </div>
+            <div class="bar"><span [style.width.%]="porcentaje(dashboard.enTransito)"></span></div>
+          </div>
+
+          <div class="progress-item">
+            <div>
+              <span>Entregadas</span>
+              <strong>{{ porcentaje(dashboard.entregadas) }}%</strong>
+            </div>
+            <div class="bar"><span [style.width.%]="porcentaje(dashboard.entregadas)"></span></div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h2>Últimas Solicitudes</h2>
+
+          <div
+            class="shipment-item"
+            *ngFor="let shipment of dashboard.ultimasSolicitudes">
+
+            <div>
+              <strong>{{ shipment.codigoSeguimiento }}</strong>
+              <p>{{ shipment.origen }} → {{ shipment.destino }}</p>
+              <small>{{ shipment.destinatario }}</small>
+            </div>
+
+            <span class="status">
+              {{ estadoTexto(shipment.estado) }}
+            </span>
+
+          </div>
+
+          <div
+            class="empty"
+            *ngIf="dashboard.ultimasSolicitudes.length === 0">
+            No hay solicitudes recientes.
+          </div>
+        </div>
+
+      </div>
+
+      <div class="mini-grid">
+
+        <div class="mini-card">
+          <span>Usuarios registrados</span>
+          <strong>{{ dashboard.totalUsuarios }}</strong>
+        </div>
+
+        <div class="mini-card">
+          <span>Sucursales activas</span>
+          <strong>{{ dashboard.totalSucursales }}</strong>
+        </div>
+
+        <div class="mini-card">
+          <span>Rechazadas</span>
+          <strong>{{ dashboard.rechazadas }}</strong>
+        </div>
+
+      </div>
+
+    </ng-container>
 
   </div>
 

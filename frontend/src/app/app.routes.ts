@@ -66,7 +66,7 @@ export const routes: Routes = [
       },
 
       {
-        path: 'shipment-status',
+        path: 'shipments',
         component: UpdateShipmentStatus
       },
 

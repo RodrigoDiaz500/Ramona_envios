@@ -1,18 +1,18 @@
 <nav class="navbar">
 
+  <!-- Logo -->
   <div class="navbar-logo">
-
     <img
       src="images/ramona_express-log.png"
-      alt="Ramona Envíos">
-
+      alt="Ramona Express">
   </div>
 
-
+  <!-- Menú -->
   <div class="navbar-links">
 
+    <!-- Dashboard -->
     <a
-      *ngIf="role === 'ADMIN'"
+      *ngIf="role === 'OPERADOR' || role === 'ADMIN'"
       routerLink="/dashboard"
       routerLinkActive="active">
 
@@ -20,6 +20,7 @@
 
     </a>
 
+    <!-- Seguimiento -->
     <a
       routerLink="/tracking"
       routerLinkActive="active">
@@ -28,6 +29,7 @@
 
     </a>
 
+    <!-- Cliente -->
     <a
       routerLink="/shipment"
       routerLinkActive="active">
@@ -37,7 +39,7 @@
     </a>
 
     <a
-      *ngIf="role === 'CLIENTE'"
+      *ngIf="role === 'CLIENTE'" 
       routerLink="/history"
       routerLinkActive="active">
 
@@ -54,6 +56,18 @@
 
     </a>
 
+    <!-- Operador / Admin -->
+
+    <!-- Esta vista la construiremos a continuación -->
+    <a
+      *ngIf="role === 'OPERADOR' || role === 'ADMIN'"
+      routerLink="/shipments"
+      routerLinkActive="active">
+
+      Centro de Operaciones
+
+    </a>
+
     <a
       *ngIf="role === 'OPERADOR' || role === 'ADMIN'"
       routerLink="/users"
@@ -64,7 +78,7 @@
     </a>
 
     <a
-      *ngIf="role === 'ADMIN'"
+      *ngIf=" role === 'ADMIN'"
       routerLink="/branches"
       routerLinkActive="active">
 
@@ -80,13 +94,17 @@
       Incidencias
 
     </a>
-    
-    <a 
+
+    <a
       *ngIf="role === 'OPERADOR' || role === 'ADMIN'"
-      routerLink="/reviews">
+      routerLink="/reviews"
+      routerLinkActive="active">
+
       Reseñas
+
     </a>
 
+    <!-- Todos -->
     <a
       routerLink="/notifications"
       routerLinkActive="active">
@@ -97,22 +115,23 @@
 
   </div>
 
+  <!-- Usuario -->
   <div class="navbar-user">
 
-  <div class="user-role">
+    <div class="user-role">
 
-    👤 {{ role }}
+      👤 {{ role }}
+
+    </div>
+
+    <button
+      class="logout-btn"
+      (click)="logout()">
+
+      Cerrar sesión
+
+    </button>
 
   </div>
-
-  <button
-    class="logout-btn"
-    (click)="logout()">
-
-    Cerrar sesión
-
-  </button>
-
-</div>
 
 </nav>
