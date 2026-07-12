@@ -2,20 +2,14 @@
   position: sticky;
   top: 0;
   z-index: 1000;
-
   min-height: 90px;
   width: 100%;
-
   display: flex;
   align-items: center;
-
   padding: 0 36px;
-
   background: rgba(255, 255, 255, .10);
   backdrop-filter: blur(20px);
-
   border-bottom: 1px solid rgba(255, 255, 255, .15);
-
   overflow: visible;
 }
 
@@ -24,7 +18,6 @@
   display: flex;
   align-items: center;
   justify-content: flex-start;
-
   width: 170px;
   flex: 0 0 170px;
 }
@@ -39,11 +32,9 @@
 /* CONTENEDOR PRINCIPAL */
 .navbar-menu {
   flex: 1;
-
   display: grid;
   grid-template-columns: 1fr auto;
   align-items: center;
-
   min-width: 0;
 }
 
@@ -52,21 +43,16 @@
   display: flex;
   align-items: center;
   justify-content: center;
-
   gap: clamp(14px, 1.5vw, 24px);
-
   min-width: 0;
 }
 
 .navbar-links a {
   color: white;
-
   font-size: .95rem;
   font-weight: 600;
   text-decoration: none;
-
   white-space: nowrap;
-
   transition: .25s ease;
 }
 
@@ -80,11 +66,8 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
-
   gap: 14px;
-
   margin-left: 28px;
-
   flex-shrink: 0;
 }
 
@@ -92,39 +75,25 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-
   color: white;
-
   font-weight: 700;
-
   padding: 8px 15px;
-
   border-radius: 999px;
-
   background: rgba(255, 255, 255, .15);
   backdrop-filter: blur(10px);
-
   border: 1px solid rgba(255, 255, 255, .25);
-
   white-space: nowrap;
 }
 
 .logout-btn {
   border: none;
   cursor: pointer;
-
   padding: 10px 18px;
-
   border-radius: 10px;
-
   background: rgba(239, 68, 68, .88);
-
   color: white;
-
   font-weight: 700;
-
   transition: .25s ease;
-
   white-space: nowrap;
 }
 
@@ -140,19 +109,14 @@
 
 .hamburger {
   display: none;
-
   width: 44px;
   height: 44px;
-
   border-radius: 12px;
-
   background: rgba(255, 255, 255, .16);
   border: 1px solid rgba(255, 255, 255, .22);
-
   justify-content: center;
   align-items: center;
   flex-direction: column;
-
   gap: 5px;
 
   cursor: pointer;
@@ -161,11 +125,8 @@
 .hamburger span {
   width: 22px;
   height: 2px;
-
   background: white;
-
   border-radius: 999px;
-
   transition: .25s;
 }
 
@@ -246,7 +207,6 @@
   .navbar {
     min-height: 78px;
     padding: 0 20px;
-
     justify-content: space-between;
   }
 
@@ -271,16 +231,11 @@
 
     display: none;
     grid-template-columns: 1fr;
-
     width: 100%;
-
     padding: 20px;
-
     background: rgba(15, 23, 42, .94);
     backdrop-filter: blur(20px);
-
     border-bottom: 1px solid rgba(255, 255, 255, .15);
-
     box-shadow: 0 15px 35px rgba(0, 0, 0, .25);
   }
 
@@ -302,7 +257,6 @@
 
   .navbar-links {
     width: 100%;
-
     flex-direction: column;
     align-items: stretch;
     justify-content: flex-start;
@@ -312,15 +266,10 @@
 
   .navbar-links a {
     display: block;
-
     width: 100%;
-
     padding: 13px 16px;
-
     border-radius: 12px;
-
     background: rgba(255, 255, 255, .08);
-
     font-size: .95rem;
     text-align: center;
   }
@@ -332,10 +281,8 @@
 
   .navbar-user {
     width: 100%;
-
     margin-left: 0;
     margin-top: 14px;
-
     flex-direction: column;
     align-items: stretch;
     justify-content: flex-start;

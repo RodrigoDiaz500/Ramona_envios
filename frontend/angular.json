@@ -70,9 +70,27 @@
           },
           "defaultConfiguration": "development"
         },
-        "test": {
-          "builder": "@angular/build:unit-test"
-        }
+          "serve": {
+    "builder": "@angular/build:dev-server",
+    "configurations": {
+      "production": {
+        "buildTarget": "frontend:build:production"
+      },
+      "development": {
+        "buildTarget": "frontend:build:development"
+      }
+    },
+    "defaultConfiguration": "development"
+  },
+  "test": {
+    "builder": "@angular/build:unit-test",
+    "options": {
+      "tsConfig": "tsconfig.spec.json",
+      "setupFiles": [
+        "src/test-setup.ts"
+      ]
+    }
+  }
       }
     }
   }
