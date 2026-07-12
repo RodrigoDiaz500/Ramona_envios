@@ -1,9 +1,11 @@
 <div class="incidents-page">
+
   <div class="incidents-container">
 
     <div class="table-card">
 
       <div class="header">
+
         <div>
           <h1>Gestión de Incidencias</h1>
           <p>Administra problemas y reclamos asociados a envíos.</p>
@@ -12,9 +14,11 @@
         <button
           *ngIf="esAdmin"
           class="btn btn-primary"
+          type="button"
           (click)="abrirCrear()">
           Nueva Incidencia
         </button>
+
       </div>
 
       <div *ngIf="loading" class="empty-state">
@@ -25,100 +29,141 @@
         No hay incidencias registradas.
       </div>
 
-      <table class="table" *ngIf="!loading && incidents.length > 0">
-        <thead>
-          <tr>
-            <th>Código</th>
-            <th>Incidencia</th>
-            <th>Estado</th>
-            <th>Fecha</th>
-            <th *ngIf="esAdmin">Acción</th>
-          </tr>
-        </thead>
+      <div class="table-wrapper" *ngIf="!loading && incidents.length > 0">
 
-        <tbody>
-          <tr *ngFor="let incident of incidents">
-            <td>{{ incident.codigoSeguimiento }}</td>
+        <table class="table">
 
-            <td>
-              <strong>{{ incident.titulo }}</strong>
-              <p>{{ incident.descripcion }}</p>
-            </td>
+          <thead>
+            <tr>
+              <th>Código</th>
+              <th>Incidencia</th>
+              <th>Estado</th>
+              <th>Fecha</th>
+              <th *ngIf="esAdmin">Acción</th>
+            </tr>
+          </thead>
 
-            <td>
-              <span
-                class="badge"
-                [ngClass]="{
-                  'badge-warning': incident.estado === 'ABIERTA',
-                  'badge-danger': incident.estado === 'EN_PROCESO',
-                  'badge-success': incident.estado === 'RESUELTA',
-                  'badge-closed': incident.estado === 'CERRADA'
-                }">
-                {{ formatearEstado(incident.estado) }}
-              </span>
-            </td>
+          <tbody>
 
-            <td>{{ incident.fechaCreacion | date:'short' }}</td>
+            <tr *ngFor="let incident of incidents">
 
-            <td class="actions" *ngIf="esAdmin">
-              <button
-                *ngIf="incident.estado === 'ABIERTA'"
-                class="btn btn-primary"
-                (click)="cambiarEstado(incident, 'EN_PROCESO')">
-                Tomar
-              </button>
+              <td data-label="Código">
+                {{ incident.codigoSeguimiento }}
+              </td>
 
-              <button
-                *ngIf="incident.estado === 'EN_PROCESO'"
-                class="btn btn-secondary"
-                (click)="cambiarEstado(incident, 'RESUELTA')">
-                Resolver
-              </button>
+              <td data-label="Incidencia">
+                <strong>{{ incident.titulo }}</strong>
+                <p>{{ incident.descripcion }}</p>
+              </td>
 
-              <button
-                *ngIf="incident.estado === 'RESUELTA'"
-                class="btn btn-danger"
-                (click)="cambiarEstado(incident, 'CERRADA')">
-                Cerrar
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
+              <td data-label="Estado">
+                <span
+                  class="badge"
+                  [ngClass]="{
+                    'badge-warning': incident.estado === 'ABIERTA',
+                    'badge-danger': incident.estado === 'EN_PROCESO',
+                    'badge-success': incident.estado === 'RESUELTA',
+                    'badge-closed': incident.estado === 'CERRADA'
+                  }">
+                  {{ formatearEstado(incident.estado) }}
+                </span>
+              </td>
+
+              <td data-label="Fecha">
+                {{ incident.fechaCreacion | date:'short' }}
+              </td>
+
+              <td  class="actions" data-label="Acción" *ngIf="esAdmin && incident.estado !== 'CERRADA'">
+
+                <button
+                  *ngIf="incident.estado === 'ABIERTA'"
+                  class="btn btn-primary"
+                  type="button"
+                  (click)="cambiarEstado(incident, 'EN_PROCESO')">
+                  Tomar
+                </button>
+
+                <button
+                  *ngIf="incident.estado === 'EN_PROCESO'"
+                  class="btn btn-secondary"
+                  type="button"
+                  (click)="cambiarEstado(incident, 'RESUELTA')">
+                  Resolver
+                </button>
+
+                <button
+                  *ngIf="incident.estado === 'RESUELTA'"
+                  class="btn btn-danger"
+                  type="button"
+                  (click)="cambiarEstado(incident, 'CERRADA')">
+                  Cerrar
+                </button>
+
+              </td>
+
+            </tr>
+
+          </tbody>
+
+        </table>
+
+      </div>
 
     </div>
 
   </div>
+
 </div>
 
 <div class="edit-modal" *ngIf="showCreateModal && esAdmin">
+
   <div class="edit-content">
 
     <div class="modal-header">
+
       <h2>Nueva Incidencia</h2>
-      <button (click)="cerrarCrear()">×</button>
+
+      <button
+        type="button"
+        (click)="cerrarCrear()">
+        ×
+      </button>
+
     </div>
 
     <div class="form-grid">
 
       <div class="input-group full">
-        <label class="select-label">Solicitud asociada</label>
 
-        <select [(ngModel)]="form.solicitudEnvioId" name="solicitudEnvioId">
-          <option [value]="0" disabled>Seleccione un envío</option>
+        <label class="select-label">
+          Solicitud asociada
+        </label>
+
+        <select
+          [(ngModel)]="form.solicitudEnvioId"
+          name="solicitudEnvioId">
+
+          <option [value]="0" disabled>
+            Seleccione un envío
+          </option>
 
           <option
             *ngFor="let solicitud of solicitudes"
             [value]="solicitud.id">
+
             {{ solicitud.codigoSeguimiento }} -
             {{ solicitud.sucursalOrigen.ciudad }}
             →
             {{ solicitud.sucursalDestino.ciudad }}
+
           </option>
+
         </select>
+
       </div>
 
       <div class="input-group full">
+
         <input
           type="text"
           placeholder=" "
@@ -126,9 +171,11 @@
           name="titulo">
 
         <label>Título de la incidencia</label>
+
       </div>
 
       <div class="textarea-group full">
+
         <label>Observaciones / Descripción</label>
 
         <textarea
@@ -137,19 +184,29 @@
           name="descripcion"
           placeholder="Describe el problema detectado...">
         </textarea>
+
       </div>
 
     </div>
 
     <div class="modal-actions">
-      <button class="btn btn-secondary" (click)="cerrarCrear()">
+
+      <button
+        class="btn btn-secondary"
+        type="button"
+        (click)="cerrarCrear()">
         Cancelar
       </button>
 
-      <button class="btn btn-primary" (click)="crearIncidencia()">
+      <button
+        class="btn btn-primary"
+        type="button"
+        (click)="crearIncidencia()">
         Crear Incidencia
       </button>
+
     </div>
 
   </div>
+
 </div>

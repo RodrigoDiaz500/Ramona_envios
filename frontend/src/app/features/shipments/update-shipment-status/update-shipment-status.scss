@@ -1,18 +1,19 @@
 .operations-page {
   min-height: calc(100vh - 90px);
-  padding: 40px;
+  padding: 32px;
   display: flex;
   justify-content: center;
 }
 
 .operations-card {
   width: 100%;
-  max-width: 1400px;
+  max-width: 1500px;
   background: rgba(255,255,255,.85);
   backdrop-filter: blur(12px);
   padding: 40px;
   border-radius: 24px;
   box-shadow: 0 10px 30px rgba(0,0,0,.15);
+  min-width: 0;
 }
 
 .header {
@@ -26,6 +27,7 @@
 .header h1 {
   color: var(--primary);
   margin: 0;
+  font-size: clamp(1.8rem, 3vw, 2.4rem);
 }
 
 .header p {
@@ -41,6 +43,7 @@
   color: white;
   font-weight: 700;
   cursor: pointer;
+  white-space: nowrap;
 }
 
 .search-box {
@@ -53,6 +56,7 @@
   border-radius: 14px;
   border: 1px solid #ddd;
   font-size: 1rem;
+  outline: none;
 }
 
 .kanban {
@@ -60,7 +64,7 @@
   grid-template-columns: repeat(6, minmax(230px, 1fr));
   gap: 18px;
   overflow-x: auto;
-  padding-bottom: 10px;
+  padding-bottom: 12px;
 }
 
 .column {
@@ -68,6 +72,7 @@
   border-radius: 18px;
   padding: 14px;
   min-height: 500px;
+  min-width: 230px;
 }
 
 .column-header {
@@ -134,7 +139,7 @@
 .modal-actions button {
   border: none;
   border-radius: 10px;
-  padding: 9px;
+  padding: 10px;
   font-weight: 700;
   cursor: pointer;
 }
@@ -169,7 +174,7 @@
   justify-content: center;
   align-items: center;
   z-index: 9999;
-  padding: 30px;
+  padding: 24px;
 }
 
 .detail-content {
@@ -177,7 +182,7 @@
   max-width: 900px;
   max-height: 90vh;
   overflow-y: auto;
-  background: rgba(255,255,255,.92);
+  background: rgba(255,255,255,.94);
   backdrop-filter: blur(12px);
   border-radius: 24px;
   padding: 35px;
@@ -187,14 +192,15 @@
 .detail-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  gap: 18px;
+  align-items: flex-start;
   margin-bottom: 30px;
 }
 
 .detail-header h2 {
   margin: 0;
   color: var(--primary);
-  font-size: 2rem;
+  font-size: clamp(1.4rem, 3vw, 2rem);
 }
 
 .detail-header p {
@@ -221,6 +227,7 @@
   background: #f8fafc;
   border-radius: 16px;
   padding: 16px;
+  min-width: 0;
 }
 
 .detail-grid span {
@@ -233,6 +240,7 @@
 .detail-grid strong {
   color: var(--text);
   font-size: .95rem;
+  overflow-wrap: anywhere;
 }
 
 .modal-actions {
@@ -289,7 +297,7 @@
   color: var(--text-light);
 }
 
-@media (max-width: 1100px) {
+@media (max-width: 1300px) {
   .kanban {
     grid-template-columns: repeat(3, minmax(230px, 1fr));
   }
@@ -299,18 +307,32 @@
   }
 }
 
-@media (max-width: 700px) {
+@media (max-width: 800px) {
   .operations-page {
     padding: 20px;
   }
 
-  .kanban {
-    grid-template-columns: 1fr;
+  .operations-card {
+    padding: 26px;
   }
 
   .header {
     flex-direction: column;
-    align-items: flex-start;
+    align-items: stretch;
+  }
+
+  .refresh-btn {
+    width: 100%;
+  }
+
+  .kanban {
+    grid-template-columns: 1fr;
+    overflow-x: visible;
+  }
+
+  .column {
+    min-width: 0;
+    min-height: auto;
   }
 
   .detail-grid {
@@ -319,5 +341,21 @@
 
   .modal-actions {
     flex-direction: column;
+  }
+}
+
+@media (max-width: 520px) {
+  .operations-page {
+    padding: 14px;
+  }
+
+  .operations-card,
+  .detail-content {
+    padding: 20px;
+    border-radius: 20px;
+  }
+
+  .detail-modal {
+    padding: 14px;
   }
 }

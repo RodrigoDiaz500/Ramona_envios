@@ -1,103 +1,116 @@
 .reviews-page {
-
   min-height: calc(100vh - 90px);
-
   display: flex;
   justify-content: center;
-  align-items: center;
-
-  padding: 40px;
+  align-items: flex-start;
+  padding: 32px;
 }
 
 .reviews-card {
-
   width: 100%;
   max-width: 1000px;
-
-  background:
-    rgba(255,255,255,.85);
-
-  backdrop-filter:
-    blur(12px);
-
+  background: rgba(255,255,255,.85);
+  backdrop-filter: blur(12px);
   border-radius: 24px;
-
   padding: 40px;
-
-  box-shadow:
-    0 10px 30px rgba(0,0,0,.15);
+  box-shadow: 0 10px 30px rgba(0,0,0,.15);
 }
 
 .reviews-card h1 {
-
   text-align: center;
-
   color: var(--primary);
-
   margin-bottom: 10px;
+  font-size: clamp(1.8rem, 3vw, 2.4rem);
 }
 
-.reviews-card p {
-
+.reviews-card > p {
   text-align: center;
-
   color: var(--text-light);
-
   margin-bottom: 30px;
 }
 
 .review-item {
-
-  padding: 20px;
-
-  margin-bottom: 20px;
-
-  border-radius: 16px;
-
-  background:
-    rgba(36,60,143,.05);
-
-  border-left:
-    5px solid var(--primary);
+  padding: 22px;
+  margin-bottom: 18px;
+  border-radius: 18px;
+  background: rgba(36,60,143,.05);
+  border-left: 5px solid var(--primary);
 }
 
 .review-header {
-
   display: flex;
-
   justify-content: space-between;
-  align-items: center;
-
+  align-items: flex-start;
+  gap: 18px;
   margin-bottom: 15px;
 }
 
 .review-header h3 {
-
   color: var(--primary);
+  margin: 0 0 6px;
+  overflow-wrap: anywhere;
 }
 
-.user {
-
+.user,
+.date {
   color: var(--text-light);
+  font-size: .9rem;
 }
 
 .date {
-
-  color: var(--text-light);
+  white-space: nowrap;
 }
 
 .stars {
-
   margin-bottom: 15px;
-
-  font-size: 1.5rem;
-
+  font-size: clamp(1.25rem, 3vw, 1.5rem);
   color: #f59e0b;
+  letter-spacing: 2px;
 }
 
 .comment {
-
   text-align: left !important;
-
   margin: 0 !important;
+  color: var(--text) !important;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 30px;
+  color: var(--text-light);
+}
+
+@media (max-width: 700px) {
+  .reviews-page {
+    padding: 20px;
+  }
+
+  .reviews-card {
+    padding: 26px;
+  }
+
+  .review-header {
+    flex-direction: column;
+  }
+
+  .date {
+    white-space: normal;
+  }
+}
+
+@media (max-width: 520px) {
+  .reviews-page {
+    padding: 14px;
+  }
+
+  .reviews-card {
+    padding: 20px;
+    border-radius: 20px;
+  }
+
+  .review-item {
+    padding: 18px;
+  }
 }

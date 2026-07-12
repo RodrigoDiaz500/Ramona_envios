@@ -1,9 +1,10 @@
 import { Routes } from '@angular/router';
+import { MsalGuard } from '@azure/msal-angular';
 
 import { Login } from './features/auth/login/login';
 
 import { MainLayout } from './layouts/main-layout/main-layout';
-
+import { adminOperatorGuard } from '../core/guards/role.guard';
 import { TrackingPage } from './features/tracking/tracking-page/tracking-page';
 import { CreateShipment } from './features/shipments/create-shipment/create-shipment';
 import { ShipmentHistory } from './features/history/shipment-history/shipment-history';
@@ -32,6 +33,8 @@ export const routes: Routes = [
   {
     path: '',
     component: MainLayout,
+
+    canActivate: [MsalGuard],
 
     children: [
 
@@ -72,7 +75,8 @@ export const routes: Routes = [
 
       {
         path: 'dashboard',
-        component: DashboardPage
+        component: DashboardPage,
+        canActivate: [adminOperatorGuard]
       },
 
       {

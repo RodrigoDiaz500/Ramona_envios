@@ -1,15 +1,21 @@
 <div class="operations-page">
+
   <div class="operations-card">
 
     <div class="header">
+
       <div>
         <h1>Centro de Operaciones</h1>
         <p>Gestiona solicitudes, aprobación y avance de envíos.</p>
       </div>
 
-      <button class="refresh-btn" (click)="cargarSolicitudes()">
+      <button
+        class="refresh-btn"
+        type="button"
+        (click)="cargarSolicitudes()">
         Actualizar
       </button>
+
     </div>
 
     <div class="search-box">
@@ -25,6 +31,7 @@
     </div>
 
     <div class="kanban" *ngIf="!loading">
+
       <div class="column" *ngFor="let estado of estados">
 
         <div class="column-header">
@@ -32,7 +39,10 @@
           <span>{{ porEstado(estado).length }}</span>
         </div>
 
-        <div class="shipment-card" *ngFor="let shipment of porEstado(estado)">
+        <div
+          class="shipment-card"
+          *ngFor="let shipment of porEstado(estado)">
+
           <h3>{{ shipment.codigoSeguimiento }}</h3>
 
           <div class="route">
@@ -48,13 +58,18 @@
           </div>
 
           <div class="actions">
-            <button class="detail" (click)="abrirDetalle(shipment)">
+
+            <button
+              class="detail"
+              type="button"
+              (click)="abrirDetalle(shipment)">
               Ver detalle
             </button>
 
             <button
               *ngIf="shipment.estado === 'PENDIENTE_APROBACION'"
               class="approve"
+              type="button"
               (click)="cambiarEstado(shipment, 'APROBADO')">
               Aprobar
             </button>
@@ -62,6 +77,7 @@
             <button
               *ngIf="shipment.estado === 'PENDIENTE_APROBACION'"
               class="reject"
+              type="button"
               (click)="cambiarEstado(shipment, 'RECHAZADO')">
               Rechazar
             </button>
@@ -69,31 +85,45 @@
             <button
               *ngIf="siguienteEstado(shipment.estado) as next"
               class="next"
+              type="button"
               (click)="cambiarEstado(shipment, next)">
               Pasar a {{ formatearEstado(next) }}
             </button>
+
           </div>
+
         </div>
 
       </div>
+
     </div>
 
   </div>
+
 </div>
 
 <div class="detail-modal" *ngIf="showDetailModal && selectedShipment">
+
   <div class="detail-content">
 
     <div class="detail-header">
+
       <div>
         <h2>{{ selectedShipment.codigoSeguimiento }}</h2>
         <p>{{ formatearEstado(selectedShipment.estado) }}</p>
       </div>
 
-      <button class="close-btn" (click)="cerrarDetalle()">×</button>
+      <button
+        class="close-btn"
+        type="button"
+        (click)="cerrarDetalle()">
+        ×
+      </button>
+
     </div>
 
     <div class="detail-grid">
+
       <div>
         <span>Origen</span>
         <strong>{{ selectedShipment.sucursalOrigen.ciudad }}</strong>
@@ -133,12 +163,15 @@
         <span>Creación</span>
         <strong>{{ selectedShipment.fechaCreacion | date:'short' }}</strong>
       </div>
+
     </div>
 
     <div class="modal-actions">
+
       <button
         *ngIf="selectedShipment.estado === 'PENDIENTE_APROBACION'"
         class="approve"
+        type="button"
         (click)="cambiarEstado(selectedShipment, 'APROBADO')">
         Aprobar
       </button>
@@ -146,6 +179,7 @@
       <button
         *ngIf="selectedShipment.estado === 'PENDIENTE_APROBACION'"
         class="reject"
+        type="button"
         (click)="cambiarEstado(selectedShipment, 'RECHAZADO')">
         Rechazar
       </button>
@@ -153,9 +187,11 @@
       <button
         *ngIf="siguienteEstado(selectedShipment.estado) as next"
         class="next"
+        type="button"
         (click)="cambiarEstado(selectedShipment, next)">
         Pasar a {{ formatearEstado(next) }}
       </button>
+
     </div>
 
     <h3>Timeline del envío</h3>
@@ -165,7 +201,11 @@
     </div>
 
     <div class="timeline" *ngIf="!loadingTimeline && seguimientos.length > 0">
-      <div class="timeline-item" *ngFor="let item of seguimientos">
+
+      <div
+        class="timeline-item"
+        *ngFor="let item of seguimientos">
+
         <div class="dot"></div>
 
         <div>
@@ -173,7 +213,9 @@
           <p>{{ item.descripcion }}</p>
           <small>{{ item.fechaEvento | date:'short' }}</small>
         </div>
+
       </div>
+
     </div>
 
     <div *ngIf="!loadingTimeline && seguimientos.length === 0" class="empty">
@@ -181,4 +223,5 @@
     </div>
 
   </div>
+
 </div>

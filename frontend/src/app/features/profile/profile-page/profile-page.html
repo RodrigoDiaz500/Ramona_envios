@@ -17,6 +17,7 @@
         <div class="form-grid">
 
           <div class="input-group">
+
             <input
               type="text"
               placeholder=" "
@@ -25,9 +26,11 @@
               (input)="user.nombre = soloLetras(user.nombre)">
 
             <label>Nombre</label>
+
           </div>
 
           <div class="input-group">
+
             <input
               type="text"
               placeholder=" "
@@ -36,9 +39,11 @@
               (input)="user.apellido = soloLetras(user.apellido)">
 
             <label>Apellido</label>
+
           </div>
 
           <div class="input-group">
+
             <input
               type="email"
               placeholder=" "
@@ -46,9 +51,11 @@
               name="correo">
 
             <label>Correo Electrónico</label>
+
           </div>
 
           <div class="input-group">
+
             <input
               type="text"
               placeholder=" "
@@ -57,11 +64,13 @@
               (input)="user.telefono = formatearTelefono(user.telefono)">
 
             <label>Teléfono</label>
+
           </div>
 
         </div>
 
-        <div class="input-group">
+        <div class="input-group full-width">
+
           <input
             type="text"
             placeholder=" "
@@ -69,11 +78,15 @@
             name="direccion">
 
           <label>Dirección</label>
+
         </div>
 
         <div class="profile-info" *ngIf="usuarioActual">
+
           <span>Rol actual</span>
+
           <strong>{{ usuarioActual.rol.nombre }}</strong>
+
         </div>
 
         <div class="button-container">

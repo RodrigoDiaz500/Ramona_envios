@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 
 import { Usuario, UsuarioRequest, UsuarioService } from '../../../../core/services/usuario.service';
 import { NotificationService } from '../../../../core/services/notification.service';
+import { AuthService } from '../../../../core/services/auth.service';
 
 @Component({
   selector: 'app-profile-page',
@@ -14,9 +15,7 @@ import { NotificationService } from '../../../../core/services/notification.serv
 })
 export class ProfilePage implements OnInit {
 
-  usuarioId = 1;
   loading = false;
-
   usuarioActual: Usuario | null = null;
 
   user = {
@@ -32,6 +31,7 @@ export class ProfilePage implements OnInit {
   constructor(
     private usuarioService: UsuarioService,
     private notificationService: NotificationService,
+    private authService: AuthService,
     private cdr: ChangeDetectorRef
   ) {}
 
@@ -39,21 +39,36 @@ export class ProfilePage implements OnInit {
     this.cargarPerfil();
   }
 
+  get usuarioId(): number | null {
+    return this.authService.getUserId();
+  }
+
   cargarPerfil(): void {
+    const id = this.usuarioId;
+
+    if (!id) {
+      this.notificationService.show(
+        'Error',
+        'No se pudo identificar al usuario autenticado.',
+        'error'
+      );
+      return;
+    }
+
     this.loading = true;
 
-    this.usuarioService.obtenerPorId(this.usuarioId).subscribe({
+    this.usuarioService.obtenerPorId(id).subscribe({
       next: (response) => {
         this.usuarioActual = response.data;
 
         this.user = {
-          nombre: response.data.nombre,
-          apellido: response.data.apellido,
-          correo: response.data.correo,
+          nombre: response.data.nombre ?? '',
+          apellido: response.data.apellido ?? '',
+          correo: response.data.correo ?? '',
           telefono: this.formatearTelefono(response.data.telefono ?? ''),
-          direccion: response.data.direccion,
-          entraId: response.data.entraId,
-          roleId: response.data.rol.id
+          direccion: response.data.direccion ?? '',
+          entraId: response.data.entraId ?? null,
+          roleId: response.data.rol?.id ?? 1
         };
 
         this.loading = false;
@@ -69,11 +84,15 @@ export class ProfilePage implements OnInit {
   }
 
   soloLetras(valor: string): string {
-    return valor.replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '');
+    return (valor ?? '').replace(/[^a-zA-ZáéíóúÁÉÍÓÚñÑ\s]/g, '');
   }
 
   formatearTelefono(valor: string): string {
-    let numeros = valor.replace(/\D/g, '');
+    let numeros = (valor ?? '').replace(/\D/g, '');
+
+    if (!numeros) {
+      return '';
+    }
 
     if (numeros.startsWith('56')) {
       numeros = numeros.substring(2);
@@ -96,14 +115,29 @@ export class ProfilePage implements OnInit {
   }
 
   saveProfile(): void {
-    if (!this.usuarioActual) return;
+    const id = this.usuarioId;
+
+    if (!id || !this.usuarioActual) {
+      this.notificationService.show(
+        'Error',
+        'No se pudo identificar el perfil.',
+        'error'
+      );
+      return;
+    }
+
+    const nombre = this.user.nombre ?? '';
+    const apellido = this.user.apellido ?? '';
+    const correo = this.user.correo ?? '';
+    const telefono = this.user.telefono ?? '';
+    const direccion = this.user.direccion ?? '';
 
     if (
-      !this.user.nombre.trim() ||
-      !this.user.apellido.trim() ||
-      !this.user.correo.trim() ||
-      !this.user.telefono.trim() ||
-      !this.user.direccion.trim()
+      !nombre.trim() ||
+      !apellido.trim() ||
+      !correo.trim() ||
+      !telefono.trim() ||
+      !direccion.trim()
     ) {
       this.notificationService.show(
         'Campos obligatorios',
@@ -113,7 +147,7 @@ export class ProfilePage implements OnInit {
       return;
     }
 
-    if (!/^\+569 \d{4} \d{4}$/.test(this.user.telefono)) {
+    if (!/^\+569 \d{4} \d{4}$/.test(telefono)) {
       this.notificationService.show(
         'Teléfono inválido',
         'El teléfono debe tener el formato +569 0000 0000.',
@@ -123,21 +157,24 @@ export class ProfilePage implements OnInit {
     }
 
     const request: UsuarioRequest = {
-      nombre: this.user.nombre.trim(),
-      apellido: this.user.apellido.trim(),
-      correo: this.user.correo.trim(),
-      telefono: this.user.telefono.trim(),
-      direccion: this.user.direccion.trim(),
+      nombre: nombre.trim(),
+      apellido: apellido.trim(),
+      correo: correo.trim(),
+      telefono: telefono.trim(),
+      direccion: direccion.trim(),
       entraId: this.user.entraId,
       roleId: this.user.roleId
     };
 
     this.loading = true;
 
-    this.usuarioService.actualizar(this.usuarioId, request).subscribe({
+    this.usuarioService.actualizar(id, request).subscribe({
       next: () => {
         this.loading = false;
-        this.notificationService.show('Perfil actualizado', 'Tus datos fueron guardados correctamente.');
+        this.notificationService.show(
+          'Perfil actualizado',
+          'Tus datos fueron guardados correctamente.'
+        );
         this.cargarPerfil();
       },
       error: (error) => {

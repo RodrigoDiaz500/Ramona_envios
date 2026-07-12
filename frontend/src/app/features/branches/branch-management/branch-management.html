@@ -13,6 +13,7 @@
 
         <button
           class="btn btn-primary"
+          type="button"
           (click)="abrirNuevaSucursal()">
           Nueva Sucursal
         </button>
@@ -54,6 +55,7 @@
 
           <button
             class="btn btn-primary"
+            type="button"
             (click)="abrirEditar(branch)">
             Editar
           </button>
@@ -61,6 +63,7 @@
           <button
             *ngIf="branch.habilitada"
             class="btn btn-danger"
+            type="button"
             (click)="solicitarCambioEstado(branch)">
             Deshabilitar
           </button>
@@ -68,6 +71,7 @@
           <button
             *ngIf="!branch.habilitada"
             class="btn btn-secondary"
+            type="button"
             (click)="solicitarCambioEstado(branch)">
             Activar
           </button>
@@ -88,7 +92,12 @@
 
     <div class="modal-header">
       <h2>{{ selectedBranch ? 'Editar Sucursal' : 'Nueva Sucursal' }}</h2>
-      <button (click)="cerrarModal()">×</button>
+
+      <button
+        type="button"
+        (click)="cerrarModal()">
+        ×
+      </button>
     </div>
 
     <div class="form-grid">
@@ -116,8 +125,9 @@
     </div>
 
     <div class="modal-actions">
-      <button class="btn btn-secondary" (click)="cerrarModal()">Cancelar</button>
-      <button class="btn btn-primary" (click)="guardarSucursal()">
+      <button class="btn btn-secondary" type="button" (click)="cerrarModal()">Cancelar</button>
+
+      <button class="btn btn-primary" type="button" (click)="guardarSucursal()">
         {{ selectedBranch ? 'Guardar cambios' : 'Crear sucursal' }}
       </button>
     </div>

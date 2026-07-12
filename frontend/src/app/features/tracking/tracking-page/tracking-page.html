@@ -4,13 +4,9 @@
 
     <div class="tracking-card">
 
-      <h1>
-        Seguimiento de Envíos
-      </h1>
+      <h1>Seguimiento de Envíos</h1>
 
-      <p>
-        Consulta el estado de tu envío en tiempo real.
-      </p>
+      <p>Consulta el estado de tu envío en tiempo real.</p>
 
       <div class="search-container">
 
@@ -21,16 +17,14 @@
             placeholder=" "
             [(ngModel)]="trackingCode">
 
-          <label>
-            Código de seguimiento
-          </label>
+          <label>Código de seguimiento</label>
 
         </div>
 
         <button
           class="btn btn-primary"
+          type="button"
           (click)="searchTracking()">
-
           Buscar
         </button>
 
@@ -40,13 +34,13 @@
         class="result-card"
         *ngIf="showResult">
 
-        <h2>
-          {{ shipment?.codigoSeguimiento }}
-        </h2>
+        <div class="result-header">
 
-        <div class="status-badge">
+          <h2>{{ shipment?.codigoSeguimiento }}</h2>
 
-          {{ shipment?.estado }}
+          <div class="status-badge">
+            {{ shipment?.estado }}
+          </div>
 
         </div>
 
@@ -54,25 +48,35 @@
 
           <div>
             <strong>Origen:</strong>
-            {{ shipment?.sucursalOrigen?.ciudad }}
+            <span>{{ shipment?.sucursalOrigen?.ciudad }}</span>
           </div>
 
           <div>
             <strong>Destino:</strong>
-            {{ shipment?.sucursalDestino?.ciudad }}
+            <span>{{ shipment?.sucursalDestino?.ciudad }}</span>
           </div>
 
           <div>
             <strong>Última actualización:</strong>
-            {{ seguimientos[seguimientos.length - 1]?.fechaEvento || shipment?.fechaCreacion }}
+            <span>{{ seguimientos[seguimientos.length - 1]?.fechaEvento || shipment?.fechaCreacion }}</span>
           </div>
 
-          <div class="details" *ngIf="seguimientos.length > 0">
-            <div *ngFor="let item of seguimientos">
-              <strong>{{ item.estado }}:</strong>
-              {{ item.descripcion }} -
-              {{ item.fechaEvento | date:'short' }}
+        </div>
+
+        <div class="timeline-list" *ngIf="seguimientos.length > 0">
+
+          <div
+            class="timeline-item"
+            *ngFor="let item of seguimientos">
+
+            <div class="timeline-dot"></div>
+
+            <div>
+              <strong>{{ item.estado }}</strong>
+              <p>{{ item.descripcion }}</p>
+              <small>{{ item.fechaEvento | date:'short' }}</small>
             </div>
+
           </div>
 
         </div>

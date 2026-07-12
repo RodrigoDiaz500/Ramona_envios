@@ -1,136 +1,119 @@
 <nav class="navbar">
 
-  <!-- Logo -->
   <div class="navbar-logo">
     <img
       src="images/ramona_express-log.png"
       alt="Ramona Express">
   </div>
 
-  <!-- Menú -->
-  <div class="navbar-links">
+  <input
+    type="checkbox"
+    id="nav-toggle"
+    class="nav-toggle">
 
-    <!-- Dashboard -->
-    <a
-      *ngIf="role === 'OPERADOR' || role === 'ADMIN'"
-      routerLink="/dashboard"
-      routerLinkActive="active">
+  <label
+    for="nav-toggle"
+    class="hamburger">
 
-      Dashboard
+    <span></span>
+    <span></span>
+    <span></span>
 
-    </a>
+  </label>
 
-    <!-- Seguimiento -->
-    <a
-      routerLink="/tracking"
-      routerLinkActive="active">
+  <div class="navbar-menu">
 
-      Seguimiento
+    <div class="navbar-links">
 
-    </a>
+      <a
+        *ngIf="role === 'OPERADOR' || role === 'ADMIN'"
+        routerLink="/dashboard"
+        routerLinkActive="active">
+        Dashboard
+      </a>
 
-    <!-- Cliente -->
-    <a
-      routerLink="/shipment"
-      routerLinkActive="active">
+      <a
+        routerLink="/tracking"
+        routerLinkActive="active">
+        Seguimiento
+      </a>
 
-      Crear Envío
+      <a
+        routerLink="/shipment"
+        routerLinkActive="active">
+        Crear Envío
+      </a>
 
-    </a>
+      <a
+        *ngIf="role === 'CLIENTE'"
+        routerLink="/history"
+        routerLinkActive="active">
+        Historial
+      </a>
 
-    <a
-      *ngIf="role === 'CLIENTE'" 
-      routerLink="/history"
-      routerLinkActive="active">
+      <a
+        *ngIf="role === 'CLIENTE'"
+        routerLink="/profile"
+        routerLinkActive="active">
+        Mi Perfil
+      </a>
 
-      Historial
+      <a
+        *ngIf="role === 'OPERADOR' || role === 'ADMIN'"
+        routerLink="/shipments"
+        routerLinkActive="active">
+        Centro de Operaciones
+      </a>
 
-    </a>
+      <a
+        *ngIf="role === 'OPERADOR' || role === 'ADMIN'"
+        routerLink="/users"
+        routerLinkActive="active">
+        Usuarios
+      </a>
 
-    <a
-      *ngIf="role === 'CLIENTE'"
-      routerLink="/profile"
-      routerLinkActive="active">
+      <a
+        *ngIf="role === 'ADMIN'"
+        routerLink="/branches"
+        routerLinkActive="active">
+        Sucursales
+      </a>
 
-      Mi Perfil
+      <a
+        *ngIf="role === 'OPERADOR' || role === 'ADMIN'"
+        routerLink="/incidents"
+        routerLinkActive="active">
+        Incidencias
+      </a>
 
-    </a>
+      <a
+        *ngIf="role === 'OPERADOR' || role === 'ADMIN'"
+        routerLink="/reviews"
+        routerLinkActive="active">
+        Reseñas
+      </a>
 
-    <!-- Operador / Admin -->
-
-    <!-- Esta vista la construiremos a continuación -->
-    <a
-      *ngIf="role === 'OPERADOR' || role === 'ADMIN'"
-      routerLink="/shipments"
-      routerLinkActive="active">
-
-      Centro de Operaciones
-
-    </a>
-
-    <a
-      *ngIf="role === 'OPERADOR' || role === 'ADMIN'"
-      routerLink="/users"
-      routerLinkActive="active">
-
-      Usuarios
-
-    </a>
-
-    <a
-      *ngIf=" role === 'ADMIN'"
-      routerLink="/branches"
-      routerLinkActive="active">
-
-      Sucursales
-
-    </a>
-
-    <a
-      *ngIf="role === 'OPERADOR' || role === 'ADMIN'"
-      routerLink="/incidents"
-      routerLinkActive="active">
-
-      Incidencias
-
-    </a>
-
-    <a
-      *ngIf="role === 'OPERADOR' || role === 'ADMIN'"
-      routerLink="/reviews"
-      routerLinkActive="active">
-
-      Reseñas
-
-    </a>
-
-    <!-- Todos -->
-    <a
-      routerLink="/notifications"
-      routerLinkActive="active">
-
-      Notificaciones
-
-    </a>
-
-  </div>
-
-  <!-- Usuario -->
-  <div class="navbar-user">
-
-    <div class="user-role">
-
-      👤 {{ role }}
+      <a
+        routerLink="/notifications"
+        routerLinkActive="active">
+        Notificaciones
+      </a>
 
     </div>
 
-    <button
-      class="logout-btn"
-      (click)="logout()">
+    <div class="navbar-user">
 
-      Cerrar sesión
+      <div class="user-role">
+        👤 {{ role }}
+      </div>
 
-    </button>
+      <button
+        class="logout-btn"
+        (click)="logout()">
+        Cerrar sesión
+      </button>
+
+    </div>
 
   </div>
 

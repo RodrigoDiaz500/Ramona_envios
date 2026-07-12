@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 
 import { SolicitudEnvio, SolicitudService } from '../../../../core/services/solicitud.service';
 import { ResenaService } from '../../../../core/services/resena.service';
+import { AuthService } from '../../../../core/services/auth.service';
 
 @Component({
   selector: 'app-shipment-history',
@@ -15,8 +16,6 @@ import { ResenaService } from '../../../../core/services/resena.service';
 export class ShipmentHistory implements OnInit {
 
   shipments: SolicitudEnvio[] = [];
-  usuarioId = 1;
-
   showReviewModal = false;
   selectedShipment: SolicitudEnvio | null = null;
 
@@ -30,6 +29,7 @@ export class ShipmentHistory implements OnInit {
   constructor(
     private solicitudService: SolicitudService,
     private resenaService: ResenaService,
+    private authService: AuthService,
     private cdr: ChangeDetectorRef
   ) {}
 
@@ -37,10 +37,21 @@ export class ShipmentHistory implements OnInit {
     this.cargarHistorial();
   }
 
+  get usuarioId(): number | null {
+    return this.authService.getUserId();
+  }
+
   cargarHistorial(): void {
+    const id = this.usuarioId;
+
+    if (!id) {
+      this.shipments = [];
+      return;
+    }
+
     this.loading = true;
 
-    this.solicitudService.listarPorUsuario(this.usuarioId).subscribe({
+    this.solicitudService.listarPorUsuario(id).subscribe({
       next: (response) => {
         this.shipments = response.data ?? [];
         this.loading = false;
@@ -67,6 +78,13 @@ export class ShipmentHistory implements OnInit {
   }
 
   submitReview(): void {
+    const id = this.usuarioId;
+
+    if (!id) {
+      this.mostrarNotificacion('No se pudo identificar al usuario.');
+      return;
+    }
+
     if (!this.selectedShipment || this.rating === 0) {
       this.mostrarNotificacion('Debes seleccionar una calificación.');
       return;
@@ -74,7 +92,7 @@ export class ShipmentHistory implements OnInit {
 
     this.resenaService.crear({
       solicitudEnvioId: this.selectedShipment.id,
-      usuarioId: this.usuarioId,
+      usuarioId: id,
       calificacion: this.rating,
       comentario: this.comment
     }).subscribe({
@@ -104,7 +122,7 @@ export class ShipmentHistory implements OnInit {
   }
 
   formatearEstado(estado: string): string {
-  return estado.replaceAll('_', ' ');
+    return estado.replaceAll('_', ' ');
   }
 
   estadoClase(estado: string): string {

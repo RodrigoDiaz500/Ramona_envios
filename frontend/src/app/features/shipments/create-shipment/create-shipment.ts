@@ -5,6 +5,8 @@ import { CommonModule } from '@angular/common';
 import { NotificationService } from '../../../../core/services/notification.service';
 import { Sucursal, SucursalService } from '../../../../core/services/sucursal.service';
 import { SolicitudService } from '../../../../core/services/solicitud.service';
+import { AuthService } from '../../../../core/services/auth.service';
+import { UsuarioService } from '../../../../core/services/usuario.service';
 
 @Component({
   selector: 'app-create-shipment',
@@ -30,17 +32,47 @@ export class CreateShipment implements OnInit {
   branches: Sucursal[] = [];
   loading = false;
 
-  usuarioId = 1;
-
   constructor(
     private notificationService: NotificationService,
     private sucursalService: SucursalService,
     private solicitudService: SolicitudService,
+    private authService: AuthService,
+    private usuarioService: UsuarioService,
     private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
     this.cargarSucursales();
+
+    if (this.esCliente) {
+      this.cargarRemitenteCliente();
+    }
+  }
+
+  get usuarioId(): number | null {
+    return this.authService.getUserId();
+  }
+
+  get esCliente(): boolean {
+    return this.authService.getRole() === 'CLIENTE';
+  }
+
+  cargarRemitenteCliente(): void {
+    const id = this.usuarioId;
+
+    if (!id) {
+      return;
+    }
+
+    this.usuarioService.obtenerPorId(id).subscribe({
+      next: (response) => {
+        this.senderName = `${response.data.nombre} ${response.data.apellido}`.trim();
+        this.cdr.detectChanges();
+      },
+      error: (error) => {
+        console.error('Error al cargar remitente', error);
+      }
+    });
   }
 
   cargarSucursales(): void {
@@ -100,6 +132,17 @@ export class CreateShipment implements OnInit {
   }
 
   createShipment(): void {
+    const id = this.usuarioId;
+
+    if (!id) {
+      this.notificationService.show(
+        'Usuario no identificado',
+        'No se pudo identificar al usuario autenticado.',
+        'error'
+      );
+      return;
+    }
+
     if (
       !this.senderName.trim() ||
       !this.receiverName.trim() ||
@@ -146,7 +189,7 @@ export class CreateShipment implements OnInit {
     }
 
     const request = {
-      usuarioId: this.usuarioId,
+      usuarioId: id,
       sucursalOrigenId: Number(this.originBranch),
       sucursalDestinoId: Number(this.destinationBranch),
       descripcion: this.observations,
@@ -186,7 +229,12 @@ export class CreateShipment implements OnInit {
   }
 
   limpiarFormulario(): void {
-    this.senderName = '';
+    if (!this.esCliente) {
+      this.senderName = '';
+    } else {
+      this.cargarRemitenteCliente();
+    }
+
     this.receiverName = '';
     this.receiverRutDni = '';
     this.receiverPhone = '';

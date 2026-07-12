@@ -1,13 +1,8 @@
-/* You can add global styles to this file, and also import other style files */
-/* You can add global styles to this file, and also import other style files */
 /* ===================================================
    RAMONA EXPRESS - DESIGN SYSTEM
 =================================================== */
 
-/* VARIABLES */
-
 :root {
-
   --primary: #243c8f;
   --primary-dark: #1d3175;
 
@@ -26,27 +21,21 @@
 
   --border: #d1d5db;
 
-  --shadow:
-    0 8px 24px rgba(0, 0, 0, 0.08);
+  --shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
 
   --transition: .3s ease;
 }
 
-/* RESET */
-
 * {
-
   margin: 0;
   padding: 0;
-
   box-sizing: border-box;
 }
 
 html,
 body {
-
   width: 100%;
-  height: 100%;
+  min-height: 100%;
 
   font-family:
     'Segoe UI',
@@ -61,23 +50,28 @@ body {
 }
 
 body {
-
   overflow-x: hidden;
 }
 
-/* LINKS */
+img,
+svg {
+  max-width: 100%;
+}
 
 a {
-
   text-decoration: none;
   color: inherit;
 }
 
-/* BOTONES */
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+}
 
 .btn {
-
-  height: 52px;
+  min-height: 52px;
 
   border: none;
 
@@ -93,38 +87,35 @@ a {
   transition: var(--transition);
 }
 
-.btn-primary {
+.btn:disabled {
+  opacity: .65;
+  cursor: not-allowed;
+}
 
+.btn-primary {
   background: var(--primary);
   color: white;
 }
 
 .btn-primary:hover {
-
   background: var(--primary-dark);
 }
 
 .btn-secondary {
-
   background: var(--secondary);
   color: white;
 }
 
 .btn-secondary:hover {
-
   background: var(--secondary-dark);
 }
 
 .btn-danger {
-
   background: var(--danger);
   color: white;
 }
 
-/* CARDS */
-
 .card {
-
   background: white;
 
   border-radius: 16px;
@@ -134,36 +125,26 @@ a {
   box-shadow: var(--shadow);
 }
 
-/* GLASS CARD */
-
 .glass-card {
+  background: rgba(255,255,255,.20);
 
-  background:
-    rgba(255,255,255,.20);
+  backdrop-filter: blur(15px);
 
-  backdrop-filter:
-    blur(15px);
-
-  border:
-    1px solid rgba(255,255,255,.25);
+  border: 1px solid rgba(255,255,255,.25);
 
   border-radius: 20px;
 
-  box-shadow:
-    0 8px 32px rgba(0,0,0,.15);
+  box-shadow: 0 8px 32px rgba(0,0,0,.15);
 }
 
-/* INPUTS */
-
 .input-group {
-
   position: relative;
 
   margin-bottom: 24px;
 }
 
-.input-group input {
-
+.input-group input,
+.input-group select {
   width: 100%;
 
   padding: 16px;
@@ -172,11 +153,9 @@ a {
 
   border: 1px solid rgba(255,255,255,.3);
 
-  background:
-    rgba(255,255,255,.15);
+  background: rgba(255,255,255,.15);
 
-  backdrop-filter:
-    blur(10px);
+  backdrop-filter: blur(10px);
 
   color: var(--text);
 
@@ -187,23 +166,28 @@ a {
   transition: .3s;
 }
 
-.input-group input:focus {
+.input-group select {
+  min-height: 54px;
 
+  background-color: rgba(255,255,255,.85);
+
+  cursor: pointer;
+}
+
+.input-group input:focus,
+.input-group select:focus {
   border-color: var(--primary);
 
-  box-shadow:
-    0 0 0 4px rgba(36,60,143,.15);
+  box-shadow: 0 0 0 4px rgba(36,60,143,.15);
 }
 
 .input-group label {
-
   position: absolute;
 
   top: 50%;
   left: 16px;
 
-  transform:
-    translateY(-50%);
+  transform: translateY(-50%);
 
   color: var(--text-light);
 
@@ -212,10 +196,8 @@ a {
   transition: .3s;
 }
 
-
 .input-group input:focus + label,
 .input-group input:not(:placeholder-shown) + label {
-
   top: 0;
 
   left: 12px;
@@ -223,17 +205,38 @@ a {
   padding: 0 6px;
 
   background-color: transparent;
-    transform: translateY(-20px);
+
+  transform: translateY(-20px);
 
   font-size: .8rem;
 
   color: var(--primary);
 }
 
-/* BADGES */
+.textarea-group textarea {
+  width: 100%;
+
+  border-radius: 14px;
+
+  border: 1px solid rgba(0,0,0,.12);
+
+  padding: 14px 16px;
+
+  resize: vertical;
+
+  min-height: 110px;
+
+  outline: none;
+
+  font-size: 1rem;
+}
+
+.textarea-group textarea:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px rgba(36,60,143,.12);
+}
 
 .badge {
-
   display: inline-block;
 
   padding: 6px 12px;
@@ -245,60 +248,116 @@ a {
 }
 
 .badge-success {
-
   background: rgba(34,197,94,.15);
   color: #15803d;
 }
 
 .badge-warning {
-
   background: rgba(250,204,21,.15);
   color: #ca8a04;
 }
 
 .badge-danger {
-
   background: rgba(239,68,68,.15);
   color: #b91c1c;
 }
 
-/* TABLAS */
-
-.table-container {
-
+.table-container,
+.table-card {
   width: 100%;
-
   overflow-x: auto;
 }
 
 .table {
-
   width: 100%;
 
   border-collapse: collapse;
 }
 
 .table th {
-
-
-
   color: var(--primary);
 
   padding: 14px;
+
+  white-space: nowrap;
 }
 
 .table td {
-
   padding: 14px;
 
-  border-bottom:
-    1px solid #e5e7eb;
+  border-bottom: 1px solid #e5e7eb;
+
   text-align: center;
 }
 
 .table tr:hover {
-
-  background:
-    rgba(36,60,143,.05);
+  background: rgba(36,60,143,.05);
 }
 
+/* ===================================================
+   RESPONSIVE GLOBAL HELPERS
+=================================================== */
+
+@media (max-width: 1024px) {
+  .card,
+  .glass-card {
+    padding: 22px;
+  }
+
+  .btn {
+    min-height: 48px;
+    padding: 0 18px;
+    font-size: .95rem;
+  }
+
+  .table {
+    min-width: 760px;
+  }
+}
+
+@media (max-width: 768px) {
+  .card,
+  .glass-card {
+    border-radius: 18px;
+    padding: 20px;
+  }
+
+  .btn {
+    width: 100%;
+  }
+
+  .input-group {
+    margin-bottom: 20px;
+  }
+
+  .input-group input,
+  .input-group select {
+    padding: 14px;
+    font-size: .95rem;
+  }
+
+  .table th,
+  .table td {
+    padding: 12px;
+    font-size: .9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .card,
+  .glass-card {
+    border-radius: 16px;
+    padding: 16px;
+  }
+
+  .input-group input,
+  .input-group select,
+  .textarea-group textarea {
+    font-size: .9rem;
+  }
+
+  .badge {
+    font-size: .75rem;
+    padding: 5px 10px;
+  }
+}

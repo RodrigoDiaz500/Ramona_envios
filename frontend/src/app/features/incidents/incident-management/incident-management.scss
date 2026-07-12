@@ -1,69 +1,116 @@
+:host {
+  display: block;
+  width: 100%;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 .incidents-page {
   min-height: calc(100vh - 90px);
+  width: 100%;
   display: flex;
   justify-content: center;
-  padding: 30px;
+  align-items: flex-start;
+  padding: 32px;
+  overflow-x: hidden;
 }
 
 .incidents-container {
   width: 100%;
   max-width: 1200px;
+  margin: 0 auto;
 }
 
 .table-card {
-  background: rgba(255,255,255,.85);
+  width: 100%;
+  background: rgba(255, 255, 255, .88);
   backdrop-filter: blur(12px);
   padding: 40px;
   border-radius: 24px;
-  box-shadow: 0 10px 30px rgba(0,0,0,.15);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, .15);
+  overflow: hidden;
 }
 
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 20px;
+  gap: 22px;
   margin-bottom: 30px;
 }
 
 .header h1 {
   color: var(--primary);
-  margin: 0;
+  margin: 0 0 8px;
+  font-size: clamp(1.8rem, 3vw, 2.4rem);
 }
 
 .header p {
   color: var(--text-light);
-  margin-top: 8px;
+  margin: 0;
+}
+
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  border-radius: 18px;
 }
 
 .table {
   width: 100%;
+  min-width: 760px;
   border-collapse: collapse;
+  table-layout: fixed;
 }
 
 .table th {
   text-align: left;
   color: var(--primary);
   padding: 14px 10px;
+  white-space: nowrap;
+  font-size: .85rem;
+  text-transform: uppercase;
+  letter-spacing: .4px;
 }
 
 .table td {
   padding: 18px 10px;
-  border-top: 1px solid rgba(0,0,0,.08);
+  border-top: 1px solid rgba(0, 0, 0, .08);
   color: var(--text);
+  vertical-align: top;
+  word-break: break-word;
+}
+
+.table td strong {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--primary);
+  line-height: 1.35;
+  overflow-wrap: anywhere;
 }
 
 .table td p {
-  margin: 6px 0 0;
+  margin: 0;
   color: var(--text-light);
   font-size: .9rem;
+  line-height: 1.45;
+  overflow-wrap: anywhere;
 }
 
 .badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   padding: 7px 13px;
   border-radius: 999px;
   font-size: .8rem;
   font-weight: 700;
+  white-space: nowrap;
+  width: fit-content;
 }
 
 .badge-warning {
@@ -88,7 +135,13 @@
 
 .actions {
   display: flex;
-  gap: 8px;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.actions .btn {
+  min-width: 110px;
 }
 
 .empty-state {
@@ -100,28 +153,31 @@
 .edit-modal {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,.55);
+  background: rgba(0, 0, 0, .55);
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 9999;
-  padding: 30px;
+  padding: 24px;
 }
 
 .edit-content {
   width: 100%;
   max-width: 760px;
-  background: rgba(255,255,255,.92);
+  max-height: 90vh;
+  overflow-y: auto;
+  background: rgba(255, 255, 255, .94);
   backdrop-filter: blur(12px);
   border-radius: 24px;
   padding: 35px;
-  box-shadow: 0 15px 45px rgba(0,0,0,.25);
+  box-shadow: 0 15px 45px rgba(0, 0, 0, .25);
 }
 
 .modal-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 18px;
   margin-bottom: 25px;
 }
 
@@ -168,7 +224,8 @@ select,
 }
 
 .textarea-group textarea {
-  resize: none;
+  resize: vertical;
+  min-height: 140px;
 }
 
 .modal-actions {
@@ -176,4 +233,207 @@ select,
   justify-content: flex-end;
   gap: 12px;
   margin-top: 25px;
+}
+
+/* =========================
+   RESPONSIVE TABLE TO CARDS
+========================= */
+
+@media (max-width: 800px) {
+  .incidents-page {
+    padding: 16px;
+  }
+
+  .incidents-container {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .table-card {
+    padding: 22px;
+    border-radius: 22px;
+    overflow: hidden;
+  }
+
+  .header {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 18px;
+  }
+
+  .header h1 {
+    font-size: 1.75rem;
+  }
+
+  .header .btn {
+    width: 100%;
+  }
+
+  .table-wrapper {
+    width: 100%;
+    overflow-x: hidden;
+    border-radius: 0;
+  }
+
+  .table {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    table-layout: auto;
+  }
+
+  .table thead {
+    display: none;
+  }
+
+  .table tbody {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    width: 100%;
+  }
+
+  .table tr {
+    display: block;
+    width: 100%;
+    max-width: 100%;
+    background: rgba(255, 255, 255, .96);
+    border-radius: 18px;
+    padding: 18px;
+    border-left: 5px solid var(--primary);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, .08);
+    overflow: hidden;
+  }
+
+  .table td {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    border: none;
+    padding: 10px 0;
+    text-align: left;
+    overflow: hidden;
+  }
+
+  .table td::before {
+    content: attr(data-label);
+    display: block;
+    font-size: .76rem;
+    font-weight: 800;
+    color: #6b7280;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: .6px;
+  }
+
+  .table td strong,
+  .table td p {
+    max-width: 100%;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+  }
+
+  .table td.actions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    padding-top: 16px;
+    padding-bottom: 0;
+  }
+
+  .table td.actions::before {
+    align-self: flex-start;
+    margin-bottom: 2px;
+  }
+
+  .table td.actions .btn {
+    width: 140px !important;
+    min-width: 140px;
+    max-width: 140px;
+    height: 46px;
+    margin: 0 auto;
+    padding: 0 18px;
+    border-radius: 999px;
+
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+
+    flex: 0 0 auto;
+    white-space: nowrap;
+  }
+
+  .badge {
+    max-width: 100%;
+  }
+
+  .modal-actions {
+    flex-direction: column;
+  }
+
+  .modal-actions .btn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 520px) {
+  .incidents-page {
+    padding: 14px;
+  }
+
+  .table-card {
+    padding: 18px;
+    border-radius: 20px;
+  }
+
+  .table tbody {
+    gap: 16px;
+  }
+
+  .table tr {
+    padding: 16px;
+    border-radius: 16px;
+  }
+
+  .table td.actions .btn {
+    width: 135px !important;
+    min-width: 135px;
+    max-width: 135px;
+  }
+
+  .edit-modal {
+    padding: 14px;
+  }
+
+  .edit-content {
+    padding: 20px;
+    border-radius: 20px;
+  }
+}
+
+@media (max-width: 380px) {
+  .incidents-page {
+    padding: 10px;
+  }
+
+  .table-card {
+    padding: 14px;
+  }
+
+  .header h1 {
+    font-size: 1.55rem;
+  }
+
+  .table tr {
+    padding: 14px;
+  }
+
+  .table td.actions .btn {
+    width: 125px !important;
+    min-width: 125px;
+    max-width: 125px;
+  }
 }

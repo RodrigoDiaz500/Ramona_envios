@@ -4,28 +4,20 @@
 
     <div class="page-header">
 
-      <h1>
-        Centro de Notificaciones
-      </h1>
+      <h1>Centro de Notificaciones</h1>
 
-      <p>
-        Historial de eventos generados por el sistema.
-      </p>
+      <p>Historial de eventos generados por el sistema.</p>
 
     </div>
 
     <div *ngIf="loading" class="empty-state">
-
       Cargando notificaciones...
-
     </div>
 
     <div
       *ngIf="!loading && notifications.length === 0"
       class="empty-state">
-
       No tienes notificaciones.
-
     </div>
 
     <div
@@ -36,32 +28,18 @@
 
       <div class="notification-content">
 
-        <h3>
+        <h3>{{ notification.titulo }}</h3>
 
-          {{ notification.titulo }}
+        <p>{{ notification.mensaje }}</p>
 
-        </h3>
-
-        <p>
-
-          {{ notification.mensaje }}
-
-        </p>
-
-        <span>
-
-          {{ notification.fechaCreacion | date:'dd/MM/yyyy HH:mm' }}
-
-        </span>
+        <span>{{ notification.fechaCreacion | date:'dd/MM/yyyy HH:mm' }}</span>
 
       </div>
 
       <div
         class="notification-badge"
         *ngIf="!notification.leida">
-
         Nueva
-
       </div>
 
     </div>

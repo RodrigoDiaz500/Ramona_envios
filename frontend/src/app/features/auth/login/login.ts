@@ -1,90 +1,38 @@
-import { Component } from '@angular/core';
-import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+
 import { AuthService } from '../../../../core/services/auth.service';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [
-    CommonModule,
-    FormsModule
-  ],
+  imports: [CommonModule],
   templateUrl: './login.html',
   styleUrl: './login.scss'
 })
-export class Login {
-
-  email = '';
-  password = '';
+export class Login implements OnInit {
 
   errorMessage = '';
+  showDisabledModal = false;
 
   constructor(
-    private router: Router,
     private authService: AuthService
   ) {}
 
-  login(): void {
+  ngOnInit(): void {
+    const loginError = localStorage.getItem('loginError');
 
-  if (
-    this.email === 'admin@ramona.cl' &&
-    this.password === 'admin'
-  ) {
-
-    this.authService.login(
-      this.email,
-      'ADMIN'
-    );
-
-    this.router.navigate([
-      '/dashboard'
-    ]);
-
-    return;
-
+    if (loginError === 'disabled') {
+      localStorage.removeItem('loginError');
+      this.showDisabledModal = true;
+    }
   }
 
-  if (
-    this.email === 'operador@ramona.cl' &&
-    this.password === 'operador'
-  ) {
-
-    this.authService.login(
-      this.email,
-      'OPERADOR'
-    );
-
-    this.router.navigate([
-      '/shipment'
-    ]);
-
-    return;
-
+  loginMicrosoft(): void {
+    this.authService.loginMicrosoft();
   }
 
-  if (
-    this.email === 'cliente@ramona.cl' &&
-    this.password === 'cliente'
-  ) {
-
-    this.authService.login(
-      this.email,
-      'CLIENTE'
-    );
-
-    this.router.navigate([
-      '/tracking'
-    ]);
-
-    return;
-
+  cerrarModal(): void {
+    this.showDisabledModal = false;
   }
-
-  this.errorMessage =
-    'Correo o contraseña incorrectos';
-
-}
-
 }

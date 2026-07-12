@@ -1,5 +1,7 @@
 <div class="shipment-page">
+
   <div class="shipment-container">
+
     <div class="shipment-card">
 
       <h1>Crear Envío</h1>
@@ -11,19 +13,23 @@
         <div class="form-grid">
 
           <div class="input-group">
+
             <input
               type="text"
               placeholder=" "
               [(ngModel)]="senderName"
               name="senderName"
+              [readonly]="esCliente"
               (input)="senderName = soloLetras(senderName)">
 
             <label>
               Nombre Remitente <span class="required">*</span>
             </label>
+
           </div>
 
           <div class="input-group">
+
             <input
               type="text"
               placeholder=" "
@@ -34,9 +40,11 @@
             <label>
               Nombre Destinatario <span class="required">*</span>
             </label>
+
           </div>
 
           <div class="input-group">
+
             <input
               type="text"
               placeholder=" "
@@ -47,9 +55,11 @@
             <label>
               RUT / DNI Destinatario <span class="required">*</span>
             </label>
+
           </div>
 
           <div class="input-group">
+
             <input
               type="text"
               placeholder=" "
@@ -60,10 +70,10 @@
             <label>
               Teléfono Destinatario <span class="required">*</span>
             </label>
+
           </div>
 
-          <div class="input-group">
-
+          <div class="input-group select-group">
 
             <select [(ngModel)]="originBranch" name="originBranch">
               <option value="" disabled>Seleccione sucursal origen</option>
@@ -74,10 +84,10 @@
                 {{ branch.nombre }} - {{ branch.ciudad }}
               </option>
             </select>
+
           </div>
 
-          <div class="input-group">
-
+          <div class="input-group select-group">
 
             <select [(ngModel)]="destinationBranch" name="destinationBranch">
               <option value="" disabled>Seleccione sucursal destino</option>
@@ -88,9 +98,11 @@
                 {{ branch.nombre }} - {{ branch.ciudad }}
               </option>
             </select>
+
           </div>
 
           <div class="input-group">
+
             <input
               type="number"
               placeholder=" "
@@ -100,9 +112,11 @@
             <label>
               Peso (kg) <span class="required">*</span>
             </label>
+
           </div>
 
           <div class="input-group">
+
             <input
               type="number"
               placeholder=" "
@@ -112,11 +126,13 @@
             <label>
               Valor Declarado <span class="required">*</span>
             </label>
+
           </div>
 
         </div>
 
         <div class="textarea-group">
+
           <label>Observaciones</label>
 
           <textarea
@@ -124,9 +140,11 @@
             [(ngModel)]="observations"
             name="observations">
           </textarea>
+
         </div>
 
         <div class="button-container">
+
           <button
             class="btn btn-primary"
             type="submit"
@@ -135,10 +153,13 @@
             {{ loading ? 'Creando...' : 'Crear Envío' }}
 
           </button>
+
         </div>
 
       </form>
 
     </div>
+
   </div>
+
 </div>

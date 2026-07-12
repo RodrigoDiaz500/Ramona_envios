@@ -39,18 +39,22 @@
 
           <h3>{{ user.nombre }} {{ user.apellido }}</h3>
 
-          <span class="role-badge">
-            {{ user.rol.nombre }}
-          </span>
+          <div class="badges-row">
 
-          <span
-            class="status-badge"
-            [class.active]="user.activo"
-            [class.inactive]="!user.activo">
+            <span class="role-badge">
+              {{ user.rol.nombre }}
+            </span>
 
-            {{ user.activo ? 'Activo' : 'Deshabilitado' }}
+            <span
+              class="status-badge"
+              [class.active]="user.activo"
+              [class.inactive]="!user.activo">
 
-          </span>
+              {{ user.activo ? 'Activo' : 'Deshabilitado' }}
+
+            </span>
+
+          </div>
 
           <p>{{ user.correo }}</p>
 
@@ -60,6 +64,7 @@
 
           <button
             class="btn btn-primary"
+            type="button"
             (click)="abrirEditar(user)">
             Editar
           </button>
@@ -67,6 +72,7 @@
           <button
             *ngIf="user.activo"
             class="btn btn-danger"
+            type="button"
             (click)="solicitarCambioEstado(user)">
             Deshabilitar
           </button>
@@ -74,6 +80,7 @@
           <button
             *ngIf="!user.activo"
             class="btn btn-secondary"
+            type="button"
             (click)="solicitarCambioEstado(user)">
             Activar
           </button>
@@ -94,7 +101,12 @@
 
     <div class="modal-header">
       <h2>Editar Usuario</h2>
-      <button (click)="cerrarEditar()">×</button>
+
+      <button
+        type="button"
+        (click)="cerrarEditar()">
+        ×
+      </button>
     </div>
 
     <div class="form-grid">
@@ -135,8 +147,8 @@
     </div>
 
     <div class="modal-actions">
-      <button class="btn btn-secondary" (click)="cerrarEditar()">Cancelar</button>
-      <button class="btn btn-primary" (click)="guardarCambios()">Guardar cambios</button>
+      <button class="btn btn-secondary" type="button" (click)="cerrarEditar()">Cancelar</button>
+      <button class="btn btn-primary" type="button" (click)="guardarCambios()">Guardar cambios</button>
     </div>
 
   </div>

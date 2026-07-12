@@ -3,44 +3,15 @@
   <div class="login-card">
 
     <img
+      class="logo"
       src="images/ramona_express-log.png"
-      alt="Ramona Envíos">
+      alt="Ramona Express">
 
-    <h1>
+    <h1>Iniciar Sesión</h1>
 
-      Iniciar Sesión
-
-    </h1>
-
-    <div class="input-group">
-
-      <input
-        type="email"
-        placeholder=" "
-        [(ngModel)]="email">
-
-      <label>
-
-        Correo Electrónico
-
-      </label>
-
-    </div>
-
-    <div class="input-group">
-
-      <input
-        type="password"
-        placeholder=" "
-        [(ngModel)]="password">
-
-      <label>
-
-        Contraseña
-
-      </label>
-
-    </div>
+    <p class="login-subtitle">
+      Accede utilizando tu cuenta de Microsoft para ingresar al sistema.
+    </p>
 
     <div
       class="error"
@@ -51,24 +22,43 @@
     </div>
 
     <button
-      class="btn btn-primary"
-      (click)="login()">
+      class="microsoft-btn"
+      type="button"
+      (click)="loginMicrosoft()">
 
-      Iniciar Sesión
+      <img
+        src="images/microsoft.png"
+        alt="Microsoft">
+
+      <span>Continuar con Microsoft</span>
 
     </button>
 
-    <div class="demo-users">
+  </div>
 
-      <strong>Usuarios Demo:</strong>
+<div class="disabled-modal" *ngIf="showDisabledModal">
 
-      <p>admin@ramona.cl / admin</p>
+  <div class="disabled-card">
 
-      <p>operador@ramona.cl / operador</p>
-
-      <p>cliente@ramona.cl / cliente</p>
-
+    <div class="disabled-icon">
+      !
     </div>
+
+    <h2>Acceso denegado</h2>
+
+    <p>
+      Tu usuario se encuentra deshabilitado, por lo que no puedes ingresar a Ramona Express.
+    </p>
+
+    <span>
+      Contacta a un administrador para recuperar el acceso.
+    </span>
+
+    <button
+      type="button"
+      (click)="cerrarModal()">
+      Entendido
+    </button>
 
   </div>
 

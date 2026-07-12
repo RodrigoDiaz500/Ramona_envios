@@ -3,14 +3,18 @@
   <div class="dashboard-container">
 
     <div class="dashboard-header">
+
       <div>
         <h1>Dashboard Operacional</h1>
         <p>Resumen general de Ramona Express.</p>
       </div>
 
-      <button (click)="cargarDashboard()">
+      <button
+        type="button"
+        (click)="cargarDashboard()">
         Actualizar
       </button>
+
     </div>
 
     <div *ngIf="loading" class="loading">
@@ -29,7 +33,7 @@
 
         <div class="stat-card warning">
           <span class="material-symbols-outlined">hourglass_top</span>
-          <h2>{{ dashboard.enPreparacion}}</h2>
+          <h2>{{ dashboard.enPreparacion }}</h2>
           <p>En preparación</p>
         </div>
 
@@ -61,51 +65,87 @@
 
       <div class="dashboard-grid">
 
-        <div class="panel">
-          <h2>Distribución de Estados</h2>
+        <div class="dashboard-left">
 
-          <div class="progress-item">
-            <div>
-              <span>En preparación</span>
-              <strong>{{ porcentaje(dashboard.enPreparacion) }}%</strong>
+          <div class="panel">
+
+            <h2>Distribución de Estados</h2>
+
+            <div class="progress-item">
+              <div>
+                <span>Aprobadas</span>
+                <strong>{{ porcentaje(dashboard.aprobadas) }}%</strong>
+              </div>
+              <div class="bar">
+                <span [style.width.%]="porcentaje(dashboard.aprobadas)"></span>
+              </div>
             </div>
-            <div class="bar"><span [style.width.%]="porcentaje(dashboard.enPreparacion)"></span></div>
+
+            <div class="progress-item">
+              <div>
+                <span>En preparación</span>
+                <strong>{{ porcentaje(dashboard.enPreparacion) }}%</strong>
+              </div>
+              <div class="bar">
+                <span [style.width.%]="porcentaje(dashboard.enPreparacion)"></span>
+              </div>
+            </div>
+
+            <div class="progress-item">
+              <div>
+                <span>En tránsito</span>
+                <strong>{{ porcentaje(dashboard.enTransito) }}%</strong>
+              </div>
+              <div class="bar">
+                <span [style.width.%]="porcentaje(dashboard.enTransito)"></span>
+              </div>
+            </div>
+
+            <div class="progress-item">
+              <div>
+                <span>Entregadas</span>
+                <strong>{{ porcentaje(dashboard.entregadas) }}%</strong>
+              </div>
+              <div class="bar">
+                <span [style.width.%]="porcentaje(dashboard.entregadas)"></span>
+              </div>
+            </div>
+
+            <div class="progress-item">
+              <div>
+                <span>Rechazadas</span>
+                <strong>{{ porcentaje(dashboard.rechazadas) }}%</strong>
+              </div>
+              <div class="bar">
+                <span [style.width.%]="porcentaje(dashboard.rechazadas)"></span>
+              </div>
+            </div>
+
           </div>
 
-          <div class="progress-item">
-            <div>
-              <span>Aprobadas</span>
-              <strong>{{ porcentaje(dashboard.aprobadas) }}%</strong>
+          <div class="mini-grid">
+
+            <div class="mini-card">
+              <span>Usuarios registrados</span>
+              <strong>{{ dashboard.totalUsuarios }}</strong>
             </div>
-            <div class="bar"><span [style.width.%]="porcentaje(dashboard.aprobadas)"></span></div>
+
+            <div class="mini-card">
+              <span>Sucursales activas</span>
+              <strong>{{ dashboard.totalSucursales }}</strong>
+            </div>
+
+            <div class="mini-card">
+              <span>Rechazadas</span>
+              <strong>{{ dashboard.rechazadas }}</strong>
+            </div>
+
           </div>
 
-          <div class="progress-item">
-            <div>
-              <span>En preparación</span>
-              <strong>{{ porcentaje(dashboard.enPreparacion) }}%</strong>
-            </div>
-            <div class="bar"><span [style.width.%]="porcentaje(dashboard.enPreparacion)"></span></div>
-          </div>
-
-          <div class="progress-item">
-            <div>
-              <span>En tránsito</span>
-              <strong>{{ porcentaje(dashboard.enTransito) }}%</strong>
-            </div>
-            <div class="bar"><span [style.width.%]="porcentaje(dashboard.enTransito)"></span></div>
-          </div>
-
-          <div class="progress-item">
-            <div>
-              <span>Entregadas</span>
-              <strong>{{ porcentaje(dashboard.entregadas) }}%</strong>
-            </div>
-            <div class="bar"><span [style.width.%]="porcentaje(dashboard.entregadas)"></span></div>
-          </div>
         </div>
 
-        <div class="panel">
+        <div class="panel latest-panel">
+
           <h2>Últimas Solicitudes</h2>
 
           <div
@@ -129,25 +169,7 @@
             *ngIf="dashboard.ultimasSolicitudes.length === 0">
             No hay solicitudes recientes.
           </div>
-        </div>
 
-      </div>
-
-      <div class="mini-grid">
-
-        <div class="mini-card">
-          <span>Usuarios registrados</span>
-          <strong>{{ dashboard.totalUsuarios }}</strong>
-        </div>
-
-        <div class="mini-card">
-          <span>Sucursales activas</span>
-          <strong>{{ dashboard.totalSucursales }}</strong>
-        </div>
-
-        <div class="mini-card">
-          <span>Rechazadas</span>
-          <strong>{{ dashboard.rechazadas }}</strong>
         </div>
 
       </div>
