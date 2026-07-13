@@ -1,41 +1,40 @@
 import {
   ApplicationConfig,
-  provideBrowserGlobalErrorListeners,
-  importProvidersFrom
+  provideBrowserGlobalErrorListeners
 } from '@angular/core';
 
 import { provideRouter } from '@angular/router';
-import { provideHttpClient, withInterceptorsFromDi, HTTP_INTERCEPTORS } from '@angular/common/http';
+import {
+  provideHttpClient,
+  withInterceptors
+} from '@angular/common/http';
 
 import {
-  MSAL_INSTANCE,
   MSAL_GUARD_CONFIG,
-  MSAL_INTERCEPTOR_CONFIG,
+  MSAL_INSTANCE,
+  MsalBroadcastService,
   MsalGuard,
-  MsalInterceptor,
-  MsalService,
-  MsalBroadcastService
+  MsalService
 } from '@azure/msal-angular';
 
 import {
-  MSALInstanceFactory,
   MSALGuardConfigFactory,
-  MSALInterceptorConfigFactory
+  MSALInstanceFactory
 } from '../core/auth/msal.config';
 
-import { withInterceptors } from '@angular/common/http';
 import { authTokenInterceptor } from '../core/auth/auth-token.interceptor';
-
 import { routes } from './app.routes';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideRouter(routes),
+
+    // Se usa un único interceptor explícito para garantizar que todas las
+    // llamadas a http://localhost:8080/api lleven el access token.
     provideHttpClient(
-    withInterceptorsFromDi(),
-    withInterceptors([authTokenInterceptor])
-),
+      withInterceptors([authTokenInterceptor])
+    ),
 
     {
       provide: MSAL_INSTANCE,
@@ -44,15 +43,6 @@ export const appConfig: ApplicationConfig = {
     {
       provide: MSAL_GUARD_CONFIG,
       useFactory: MSALGuardConfigFactory
-    },
-    {
-      provide: MSAL_INTERCEPTOR_CONFIG,
-      useFactory: MSALInterceptorConfigFactory
-    },
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: MsalInterceptor,
-      multi: true
     },
 
     MsalService,

@@ -1,0 +1,35 @@
+server:
+  port: ${SERVER_PORT:8088}
+
+spring:
+  application:
+    name: dashboard-service
+
+services:
+  usuario:
+    url: ${USUARIO_SERVICE_URL:http://localhost:8081}
+  sucursal:
+    url: ${SUCURSAL_SERVICE_URL:http://localhost:8082}
+  solicitud:
+    url: ${SOLICITUD_SERVICE_URL:http://localhost:8084}
+  incidencia:
+    url: ${INCIDENCIA_SERVICE_URL:http://localhost:8085}
+  resena:
+    url: ${RESENA_SERVICE_URL:http://localhost:8086}
+
+app:
+  cors:
+    allowed-origin: ${CORS_ALLOWED_ORIGIN:http://localhost:4200}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html

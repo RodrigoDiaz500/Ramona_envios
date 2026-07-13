@@ -1,7 +1,10 @@
 import {
+  BrowserCacheLocation,
+  Configuration,
+  InteractionType,
   IPublicClientApplication,
   PublicClientApplication,
-  InteractionType
+  RedirectRequest
 } from '@azure/msal-browser';
 
 import {
@@ -9,45 +12,90 @@ import {
   MsalInterceptorConfiguration
 } from '@azure/msal-angular';
 
-export const msalConfig = {
+import { environment } from '../../environments/environment';
+
+
+export const RAMONA_API_SCOPE =
+  environment.azure.scope.trim();
+
+
+const authority =
+  environment.azure.authority.trim();
+
+export const msalConfig: Configuration = {
   auth: {
-    clientId: 'b82da08a-15ea-4bd6-902e-236d2d2e523a',
-    authority: 'https://login.microsoftonline.com/common',
-    redirectUri: 'http://localhost:4200'
+    clientId:
+      environment.azure.clientId.trim(),
+
+    authority,
+
+    redirectUri:
+      environment.azure.redirectUri.trim(),
+
+  
+    postLogoutRedirectUri:
+      environment.azure.postLogoutRedirectUri.trim()
   },
+
   cache: {
-    cacheLocation: 'localStorage',
-    storeAuthStateInCookie: false
+    cacheLocation:
+      BrowserCacheLocation.LocalStorage
   }
 };
 
-export const loginRequest = {
+
+export const loginRequest: RedirectRequest = {
   scopes: [
-    'api://b82da08a-15ea-4bd6-902e-236d2d2e523a/Acceso.Total'
-  ]
+    RAMONA_API_SCOPE
+  ],
+
+  prompt:
+    'select_account'
 };
 
-export function MSALInstanceFactory(): IPublicClientApplication {
-  return new PublicClientApplication(msalConfig);
+export function MSALInstanceFactory():
+  IPublicClientApplication {
+
+  return new PublicClientApplication(
+    msalConfig
+  );
 }
 
-export function MSALGuardConfigFactory(): MsalGuardConfiguration {
+/**
+ * Configuración del guard de MSAL.
+ */
+export function MSALGuardConfigFactory():
+  MsalGuardConfiguration {
+
   return {
-    interactionType: InteractionType.Redirect,
-    authRequest: loginRequest
+    interactionType:
+      InteractionType.Redirect,
+
+    authRequest:
+      loginRequest
   };
 }
 
-export function MSALInterceptorConfigFactory(): MsalInterceptorConfiguration {
-  const protectedResourceMap = new Map<string, Array<string>>();
+/**
+ * Configuración del interceptor de MSAL.
+ */
+export function MSALInterceptorConfigFactory():
+  MsalInterceptorConfiguration {
+
+  const protectedResourceMap =
+    new Map<string, Array<string>>();
 
   protectedResourceMap.set(
-  'http://localhost:8080/api',
-  ['api://b82da08a-15ea-4bd6-902e-236d2d2e523a/Acceso.Total']
-);
+    'http://localhost:8080/api/*',
+    [
+      RAMONA_API_SCOPE
+    ]
+  );
 
   return {
-    interactionType: InteractionType.Redirect,
+    interactionType:
+      InteractionType.Redirect,
+
     protectedResourceMap
   };
 }

@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 import { MsalService } from '@azure/msal-angular';
 
+import { loginRequest } from '../auth/msal.config';
+import { environment } from '../../environments/environment';
+
 export type UserRole =
   | 'CLIENTE'
   | 'OPERADOR'
@@ -17,10 +20,10 @@ export interface UserSession {
 })
 export class AuthService {
 
-  private storageKey = 'ramona_user';
+  private readonly storageKey = 'ramona_user';
 
   constructor(
-    private msalService: MsalService
+    private readonly msalService: MsalService
   ) {}
 
   login(
@@ -28,16 +31,8 @@ export class AuthService {
     email: string,
     role: UserRole
   ): void {
-    const user: UserSession = {
-      id,
-      email,
-      role
-    };
-
-    localStorage.setItem(
-      this.storageKey,
-      JSON.stringify(user)
-    );
+    const user: UserSession = { id, email, role };
+    localStorage.setItem(this.storageKey, JSON.stringify(user));
   }
 
   saveSessionFromBackend(
@@ -49,29 +44,32 @@ export class AuthService {
   }
 
   async loginMicrosoft(): Promise<void> {
-  await this.msalService.instance.initialize();
-
-  await this.msalService.loginRedirect({
-      scopes: [
-        'api://b82da08a-15ea-4bd6-902e-236d2d2e523a/Acceso.Total'
-      ],
-      prompt: 'select_account'
-    });
+    await this.msalService.instance.initialize();
+    await this.msalService.loginRedirect(loginRequest);
   }
 
   async logout(): Promise<void> {
     localStorage.removeItem(this.storageKey);
 
     await this.msalService.instance.initialize();
-
     await this.msalService.logoutRedirect({
-      postLogoutRedirectUri: 'http://localhost:4200/login'
+      postLogoutRedirectUri: environment.azure.postLogoutRedirectUri
     });
   }
 
   getUser(): UserSession | null {
-    const user = localStorage.getItem(this.storageKey);
-    return user ? JSON.parse(user) : null;
+    const storedUser = localStorage.getItem(this.storageKey);
+
+    if (!storedUser) {
+      return null;
+    }
+
+    try {
+      return JSON.parse(storedUser) as UserSession;
+    } catch {
+      localStorage.removeItem(this.storageKey);
+      return null;
+    }
   }
 
   getUserId(): number | null {

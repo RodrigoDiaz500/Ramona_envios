@@ -1,0 +1,36 @@
+server:
+  port: ${SERVER_PORT:8089}
+
+spring:
+  application:
+    name: auth-service
+
+services:
+  usuario:
+    url: ${USUARIO_SERVICE_URL:http://localhost:8081}
+
+security:
+  oauth2:
+    audience: ${AZURE_API_AUDIENCE:b82da08a-15ea-4bd6-902e-236d2d2e523a}
+    jwk-set-uri: ${AZURE_JWK_SET_URI:https://login.microsoftonline.com/common/discovery/v2.0/keys}
+
+app:
+  default-client-role-id: ${DEFAULT_CLIENT_ROLE_ID:1}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+
+logging:
+  level:
+    org.springframework.security: DEBUG
+    org.springframework.security.oauth2: DEBUG

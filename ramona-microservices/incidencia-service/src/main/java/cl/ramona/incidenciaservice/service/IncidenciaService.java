@@ -1,0 +1,3 @@
+package cl.ramona.incidenciaservice.service;
+import cl.ramona.incidenciaservice.dto.request.*; import cl.ramona.incidenciaservice.dto.response.IncidenciaResponse; import cl.ramona.incidenciaservice.enums.EstadoIncidencia; import java.util.List;
+public interface IncidenciaService { IncidenciaResponse crearIncidencia(IncidenciaRequest request); List<IncidenciaResponse> listarIncidencias(); IncidenciaResponse obtenerPorId(Long id); List<IncidenciaResponse> listarPorSolicitud(Long solicitudEnvioId); List<IncidenciaResponse> listarPorEstado(EstadoIncidencia estado); IncidenciaResponse actualizarEstado(Long id,ActualizarEstadoIncidenciaRequest request); }

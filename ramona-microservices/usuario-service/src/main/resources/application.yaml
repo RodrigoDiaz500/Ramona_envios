@@ -1,0 +1,36 @@
+server:
+  port: ${SERVER_PORT:8081}
+
+spring:
+  application:
+    name: usuario-service
+  datasource:
+    url: jdbc:oracle:thin:@tcps://adb.sa-valparaiso-1.oraclecloud.com:1522/gf8a4acc6bb157d_mjswhxc6myd29o1l_medium.adb.oraclecloud.com?wallet_location=C:/Users/rodri/Downloads/Wallet_MJSWHXC6MYD29O1L
+    username: ADMIN
+    password: Ramona_express27
+    driver-class-name: oracle.jdbc.OracleDriver
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        format_sql: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      probes:
+        enabled: true
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+
+app:
+  cors:
+    allowed-origin: ${CORS_ALLOWED_ORIGIN:http://localhost:4200}

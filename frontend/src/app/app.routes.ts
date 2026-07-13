@@ -1,6 +1,4 @@
 import { Routes } from '@angular/router';
-import { MsalGuard } from '@azure/msal-angular';
-
 import { Login } from './features/auth/login/login';
 
 import { MainLayout } from './layouts/main-layout/main-layout';
@@ -17,25 +15,20 @@ import { IncidentManagement } from './features/incidents/incident-management/inc
 import { NotificationCenter } from './features/notifications/notification-center/notification-center';
 import { ReviewManagement } from './features/reviews/review-management/review-management';
 
-export const routes: Routes = [
 
+export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'login',
-    pathMatch: 'full'
+    pathMatch: 'full',
+    redirectTo: 'login'
   },
-
   {
     path: 'login',
     component: Login
   },
-
   {
     path: '',
     component: MainLayout,
-
-    canActivate: [MsalGuard],
-
     children: [
 
       {

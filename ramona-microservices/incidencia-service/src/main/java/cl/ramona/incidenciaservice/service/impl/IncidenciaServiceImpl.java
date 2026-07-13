@@ -1,0 +1,16 @@
+package cl.ramona.incidenciaservice.service.impl;
+import cl.ramona.incidenciaservice.client.*; import cl.ramona.incidenciaservice.dto.request.*; import cl.ramona.incidenciaservice.dto.response.*; import cl.ramona.incidenciaservice.entity.Incidencia; import cl.ramona.incidenciaservice.enums.EstadoIncidencia; import cl.ramona.incidenciaservice.exception.ResourceNotFoundException; import cl.ramona.incidenciaservice.repository.IncidenciaRepository; import cl.ramona.incidenciaservice.service.IncidenciaService;
+import lombok.RequiredArgsConstructor; import org.springframework.stereotype.Service; import java.time.LocalDateTime; import java.util.List;
+@Service @RequiredArgsConstructor
+public class IncidenciaServiceImpl implements IncidenciaService {
+ private final IncidenciaRepository repository; private final SolicitudClient solicitudClient; private final UsuarioClient usuarioClient;
+ public IncidenciaResponse crearIncidencia(IncidenciaRequest r){ SolicitudResumenResponse s=solicitudClient.obtener(r.solicitudEnvioId()); UsuarioResponse creador=usuarioClient.obtener(r.creadaPorId()); UsuarioResponse asignado=r.asignadaAId()!=null?usuarioClient.obtener(r.asignadaAId()):null; LocalDateTime now=LocalDateTime.now(); Incidencia i=Incidencia.builder().solicitudEnvioId(s.id()).titulo(r.titulo()).descripcion(r.descripcion()).estado(EstadoIncidencia.ABIERTA).creadaPorId(creador.id()).asignadaAId(asignado!=null?asignado.id():null).fechaCreacion(now).fechaActualizacion(now).build(); return toResponse(repository.save(i),s,creador,asignado); }
+ public List<IncidenciaResponse> listarIncidencias(){ return repository.findAll().stream().map(this::toResponse).toList(); }
+ public IncidenciaResponse obtenerPorId(Long id){ return toResponse(buscar(id)); }
+ public List<IncidenciaResponse> listarPorSolicitud(Long solicitudEnvioId){ solicitudClient.obtener(solicitudEnvioId); return repository.findBySolicitudEnvioId(solicitudEnvioId).stream().map(this::toResponse).toList(); }
+ public List<IncidenciaResponse> listarPorEstado(EstadoIncidencia estado){ return repository.findByEstado(estado).stream().map(this::toResponse).toList(); }
+ public IncidenciaResponse actualizarEstado(Long id,ActualizarEstadoIncidenciaRequest r){ Incidencia i=buscar(id); if(r.asignadaAId()!=null){ usuarioClient.obtener(r.asignadaAId()); i.setAsignadaAId(r.asignadaAId()); } i.setEstado(r.estado()); i.setFechaActualizacion(LocalDateTime.now()); return toResponse(repository.save(i)); }
+ private Incidencia buscar(Long id){ return repository.findById(id).orElseThrow(()->new ResourceNotFoundException("Incidencia no encontrada")); }
+ private IncidenciaResponse toResponse(Incidencia i){ SolicitudResumenResponse s=solicitudClient.obtener(i.getSolicitudEnvioId()); UsuarioResponse c=usuarioClient.obtener(i.getCreadaPorId()); UsuarioResponse a=i.getAsignadaAId()!=null?usuarioClient.obtener(i.getAsignadaAId()):null; return toResponse(i,s,c,a); }
+ private IncidenciaResponse toResponse(Incidencia i,SolicitudResumenResponse s,UsuarioResponse c,UsuarioResponse a){ return new IncidenciaResponse(i.getId(),i.getSolicitudEnvioId(),s.codigoSeguimiento(),i.getTitulo(),i.getDescripcion(),i.getEstado(),c,a,i.getFechaCreacion(),i.getFechaActualizacion()); }
+}

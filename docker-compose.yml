@@ -1,0 +1,91 @@
+services:
+
+  usuario-service:
+    build:
+      context: ./ramona-microservices/usuario-service
+    container_name: ramona-usuario
+    restart: unless-stopped
+    environment:
+      SERVER_PORT: 8081
+      DB_URL: ${DB_URL}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - ./wallet:/opt/oracle/wallet:ro
+    networks:
+      - ramona-network
+
+  sucursal-service:
+    build:
+      context: ./ramona-microservices/sucursal-service
+    container_name: ramona-sucursal
+    restart: unless-stopped
+    environment:
+      SERVER_PORT: 8082
+      DB_URL: ${DB_URL}
+      DB_USERNAME: ${DB_USERNAME}
+      DB_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - ./wallet:/opt/oracle/wallet:ro
+    networks:
+      - ramona-network
+
+  auth-service:
+    build:
+      context: ./ramona-microservices/auth-service
+    container_name: ramona-auth
+    restart: unless-stopped
+    environment:
+      SERVER_PORT: 8089
+      USUARIO_SERVICE_URL: http://usuario-service:8081
+      AZURE_API_AUDIENCE: ${AZURE_API_AUDIENCE}
+      AZURE_JWK_SET_URI: ${AZURE_JWK_SET_URI}
+    depends_on:
+      - usuario-service
+    networks:
+      - ramona-network
+
+  api-gateway:
+    build:
+      context: ./ramona-microservices/api-gateway
+    container_name: ramona-gateway
+    restart: unless-stopped
+    environment:
+      SERVER_PORT: 8080
+
+      USUARIO_SERVICE_URL: http://usuario-service:8081
+      SUCURSAL_SERVICE_URL: http://sucursal-service:8082
+      SEGUIMIENTO_SERVICE_URL: http://seguimiento-service:8083
+      SOLICITUD_SERVICE_URL: http://solicitud-service:8084
+      INCIDENCIA_SERVICE_URL: http://incidencia-service:8085
+      RESENA_SERVICE_URL: http://resena-service:8086
+      NOTIFICACION_SERVICE_URL: http://notificacion-service:8087
+      DASHBOARD_SERVICE_URL: http://dashboard-service:8088
+      AUTH_SERVICE_URL: http://auth-service:8089
+
+      AZURE_API_AUDIENCE: ${AZURE_API_AUDIENCE}
+      AZURE_JWK_SET_URI: ${AZURE_JWK_SET_URI}
+
+      CORS_ALLOWED_ORIGIN: ${FRONTEND_URL}
+    depends_on:
+      - usuario-service
+      - sucursal-service
+      - auth-service
+    networks:
+      - ramona-network
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: ramona-frontend
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    depends_on:
+      - api-gateway
+    networks:
+      - ramona-network
+
+networks:
+  ramona-network:
+    driver: bridge

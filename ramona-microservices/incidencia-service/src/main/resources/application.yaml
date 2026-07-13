@@ -1,0 +1,42 @@
+server:
+  port: ${SERVER_PORT:8085}
+spring:
+  application:
+    name: incidencia-service
+  datasource:
+    url: jdbc:oracle:thin:@tcps://adb.sa-valparaiso-1.oraclecloud.com:1522/gf8a4acc6bb157d_mjswhxc6myd29o1l_medium.adb.oraclecloud.com?wallet_location=C:/Users/rodri/Downloads/Wallet_MJSWHXC6MYD29O1L
+    username: ADMIN
+    password: Ramona_express27
+    driver-class-name: oracle.jdbc.OracleDriver
+    hikari:
+      connection-timeout: 30000
+      validation-timeout: 5000
+      maximum-pool-size: 5
+      minimum-idle: 1
+  jpa:
+    database-platform: org.hibernate.dialect.OracleDialect
+    open-in-view: false
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        format_sql: true
+services:
+  solicitud:
+    url: ${SOLICITUD_SERVICE_URL:http://localhost:8084}
+  usuario:
+    url: ${USUARIO_SERVICE_URL:http://localhost:8081}
+app:
+  cors:
+    allowed-origin: ${CORS_ALLOWED_ORIGIN:http://localhost:4200}
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html

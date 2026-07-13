@@ -1,0 +1,84 @@
+server:
+  port: ${SERVER_PORT:8080}
+
+spring:
+  application:
+    name: api-gateway
+
+  cloud:
+    gateway:
+      server:
+        webflux:
+
+          default-filters:
+            - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
+
+          routes:
+            - id: usuario-service
+              uri: ${USUARIO_SERVICE_URL:http://localhost:8081}
+              predicates:
+                - Path=/api/usuarios/**,/api/roles/**
+
+            - id: sucursal-service
+              uri: ${SUCURSAL_SERVICE_URL:http://localhost:8082}
+              predicates:
+                - Path=/api/sucursales/**
+
+            - id: seguimiento-service
+              uri: ${SEGUIMIENTO_SERVICE_URL:http://localhost:8083}
+              predicates:
+                - Path=/api/seguimientos/**
+
+            - id: solicitud-service
+              uri: ${SOLICITUD_SERVICE_URL:http://localhost:8084}
+              predicates:
+                - Path=/api/solicitudes/**
+
+            - id: incidencia-service
+              uri: ${INCIDENCIA_SERVICE_URL:http://localhost:8085}
+              predicates:
+                - Path=/api/incidencias/**
+
+            - id: resena-service
+              uri: ${RESENA_SERVICE_URL:http://localhost:8086}
+              predicates:
+                - Path=/api/resenas/**
+
+            - id: notificacion-service
+              uri: ${NOTIFICACION_SERVICE_URL:http://localhost:8087}
+              predicates:
+                - Path=/api/notificaciones/**
+
+            - id: dashboard-service
+              uri: ${DASHBOARD_SERVICE_URL:http://localhost:8088}
+              predicates:
+                - Path=/api/dashboard,/api/dashboard/**
+
+            - id: auth-service
+              uri: ${AUTH_SERVICE_URL:http://localhost:8089}
+              predicates:
+                - Path=/api/auth/**
+
+azure:
+  audience: ${AZURE_API_AUDIENCE:b82da08a-15ea-4bd6-902e-236d2d2e523a}
+  jwk-set-uri: ${AZURE_JWK_SET_URI:https://login.microsoftonline.com/common/discovery/v2.0/keys}
+
+app:
+  cors:
+    allowed-origin: ${CORS_ALLOWED_ORIGIN:http://localhost:4200}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,gateway
+  endpoint:
+    health:
+      show-details: always
+    gateway:
+      access: read-only
+
+logging:
+  level:
+    org.springframework.security: DEBUG
+    org.springframework.security.oauth2: DEBUG
