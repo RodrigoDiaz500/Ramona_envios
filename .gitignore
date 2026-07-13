@@ -1,0 +1,11 @@
+.env
+.env.*
+!.env.example
+wallet/
+**/target/
+frontend/node_modules/
+frontend/dist/
+frontend/.angular/
+frontend/package-lock.backup.json
+*.log
+.github/modernize/

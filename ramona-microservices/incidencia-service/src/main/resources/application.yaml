@@ -4,9 +4,9 @@ spring:
   application:
     name: incidencia-service
   datasource:
-    url: jdbc:oracle:thin:@tcps://adb.sa-valparaiso-1.oraclecloud.com:1522/gf8a4acc6bb157d_mjswhxc6myd29o1l_medium.adb.oraclecloud.com?wallet_location=C:/Users/rodri/Downloads/Wallet_MJSWHXC6MYD29O1L
-    username: ADMIN
-    password: Ramona_express27
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
     driver-class-name: oracle.jdbc.OracleDriver
     hikari:
       connection-timeout: 30000

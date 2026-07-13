@@ -1,91 +1,395 @@
 services:
 
   usuario-service:
-    build:
-      context: ./ramona-microservices/usuario-service
-    container_name: ramona-usuario
+    image: ramona-usuario-service:local
+    container_name: ramona-usuario-service
     restart: unless-stopped
+
     environment:
-      SERVER_PORT: 8081
-      DB_URL: ${DB_URL}
-      DB_USERNAME: ${DB_USERNAME}
-      DB_PASSWORD: ${DB_PASSWORD}
+      SERVER_PORT: "8081"
+      DB_URL: "${DB_URL}"
+      DB_USERNAME: "${DB_USERNAME}"
+      DB_PASSWORD: "${DB_PASSWORD}"
+      CORS_ALLOWED_ORIGIN: "${CORS_ALLOWED_ORIGIN}"
+
+      JAVA_OPTS: >-
+        -Xms64m
+        -Xmx220m
+        -XX:MaxMetaspaceSize=96m
+        -XX:MaxDirectMemorySize=48m
+        -XX:+UseG1GC
+        -XX:+ExitOnOutOfMemoryError
+
     volumes:
       - ./wallet:/opt/oracle/wallet:ro
+
+    mem_limit: 384m
+
     networks:
       - ramona-network
+
 
   sucursal-service:
-    build:
-      context: ./ramona-microservices/sucursal-service
-    container_name: ramona-sucursal
+    image: ramona-sucursal-service:local
+    container_name: ramona-sucursal-service
     restart: unless-stopped
+
     environment:
-      SERVER_PORT: 8082
-      DB_URL: ${DB_URL}
-      DB_USERNAME: ${DB_USERNAME}
-      DB_PASSWORD: ${DB_PASSWORD}
+      SERVER_PORT: "8082"
+      DB_URL: "${DB_URL}"
+      DB_USERNAME: "${DB_USERNAME}"
+      DB_PASSWORD: "${DB_PASSWORD}"
+      CORS_ALLOWED_ORIGIN: "${CORS_ALLOWED_ORIGIN}"
+
+      JAVA_OPTS: >-
+        -Xms64m
+        -Xmx220m
+        -XX:MaxMetaspaceSize=96m
+        -XX:MaxDirectMemorySize=48m
+        -XX:+UseG1GC
+        -XX:+ExitOnOutOfMemoryError
+
     volumes:
       - ./wallet:/opt/oracle/wallet:ro
+
+    mem_limit: 384m
+
     networks:
       - ramona-network
 
-  auth-service:
-    build:
-      context: ./ramona-microservices/auth-service
-    container_name: ramona-auth
+
+  seguimiento-service:
+    image: ramona-seguimiento-service:local
+    container_name: ramona-seguimiento-service
     restart: unless-stopped
+
     environment:
-      SERVER_PORT: 8089
-      USUARIO_SERVICE_URL: http://usuario-service:8081
-      AZURE_API_AUDIENCE: ${AZURE_API_AUDIENCE}
-      AZURE_JWK_SET_URI: ${AZURE_JWK_SET_URI}
+      SERVER_PORT: "8083"
+
+      DB_URL: "${DB_URL}"
+      DB_USERNAME: "${DB_USERNAME}"
+      DB_PASSWORD: "${DB_PASSWORD}"
+
+      SOLICITUD_SERVICE_URL: "http://solicitud-service:8084"
+      USUARIO_SERVICE_URL: "http://usuario-service:8081"
+
+      CORS_ALLOWED_ORIGIN: "${CORS_ALLOWED_ORIGIN}"
+
+      JAVA_OPTS: >-
+        -Xms64m
+        -Xmx220m
+        -XX:MaxMetaspaceSize=96m
+        -XX:MaxDirectMemorySize=48m
+        -XX:+UseG1GC
+        -XX:+ExitOnOutOfMemoryError
+
+    volumes:
+      - ./wallet:/opt/oracle/wallet:ro
+
     depends_on:
       - usuario-service
+
+    mem_limit: 384m
+
     networks:
       - ramona-network
 
-  api-gateway:
-    build:
-      context: ./ramona-microservices/api-gateway
-    container_name: ramona-gateway
+
+  solicitud-service:
+    image: ramona-solicitud-service:local
+    container_name: ramona-solicitud-service
     restart: unless-stopped
+
     environment:
-      SERVER_PORT: 8080
+      SERVER_PORT: "8084"
 
-      USUARIO_SERVICE_URL: http://usuario-service:8081
-      SUCURSAL_SERVICE_URL: http://sucursal-service:8082
-      SEGUIMIENTO_SERVICE_URL: http://seguimiento-service:8083
-      SOLICITUD_SERVICE_URL: http://solicitud-service:8084
-      INCIDENCIA_SERVICE_URL: http://incidencia-service:8085
-      RESENA_SERVICE_URL: http://resena-service:8086
-      NOTIFICACION_SERVICE_URL: http://notificacion-service:8087
-      DASHBOARD_SERVICE_URL: http://dashboard-service:8088
-      AUTH_SERVICE_URL: http://auth-service:8089
+      DB_URL: "${DB_URL}"
+      DB_USERNAME: "${DB_USERNAME}"
+      DB_PASSWORD: "${DB_PASSWORD}"
 
-      AZURE_API_AUDIENCE: ${AZURE_API_AUDIENCE}
-      AZURE_JWK_SET_URI: ${AZURE_JWK_SET_URI}
+      USUARIO_SERVICE_URL: "http://usuario-service:8081"
+      SUCURSAL_SERVICE_URL: "http://sucursal-service:8082"
+      SEGUIMIENTO_SERVICE_URL: "http://seguimiento-service:8083"
+      NOTIFICACION_SERVICE_URL: "http://notificacion-service:8087"
 
-      CORS_ALLOWED_ORIGIN: ${FRONTEND_URL}
+      CORS_ALLOWED_ORIGIN: "${CORS_ALLOWED_ORIGIN}"
+
+      JAVA_OPTS: >-
+        -Xms64m
+        -Xmx220m
+        -XX:MaxMetaspaceSize=96m
+        -XX:MaxDirectMemorySize=48m
+        -XX:+UseG1GC
+        -XX:+ExitOnOutOfMemoryError
+
+    volumes:
+      - ./wallet:/opt/oracle/wallet:ro
+
     depends_on:
       - usuario-service
       - sucursal-service
-      - auth-service
+
+    mem_limit: 384m
+
     networks:
       - ramona-network
+
+
+  incidencia-service:
+    image: ramona-incidencia-service:local
+    container_name: ramona-incidencia-service
+    restart: unless-stopped
+
+    environment:
+      SERVER_PORT: "8085"
+
+      DB_URL: "${DB_URL}"
+      DB_USERNAME: "${DB_USERNAME}"
+      DB_PASSWORD: "${DB_PASSWORD}"
+
+      SOLICITUD_SERVICE_URL: "http://solicitud-service:8084"
+      USUARIO_SERVICE_URL: "http://usuario-service:8081"
+
+      CORS_ALLOWED_ORIGIN: "${CORS_ALLOWED_ORIGIN}"
+
+      JAVA_OPTS: >-
+        -Xms64m
+        -Xmx220m
+        -XX:MaxMetaspaceSize=96m
+        -XX:MaxDirectMemorySize=48m
+        -XX:+UseG1GC
+        -XX:+ExitOnOutOfMemoryError
+
+    volumes:
+      - ./wallet:/opt/oracle/wallet:ro
+
+    depends_on:
+      - solicitud-service
+      - usuario-service
+
+    mem_limit: 384m
+
+    networks:
+      - ramona-network
+
+
+  resena-service:
+    image: ramona-resena-service:local
+    container_name: ramona-resena-service
+    restart: unless-stopped
+
+    environment:
+      SERVER_PORT: "8086"
+
+      DB_URL: "${DB_URL}"
+      DB_USERNAME: "${DB_USERNAME}"
+      DB_PASSWORD: "${DB_PASSWORD}"
+
+      SOLICITUD_SERVICE_URL: "http://solicitud-service:8084"
+      USUARIO_SERVICE_URL: "http://usuario-service:8081"
+
+      CORS_ALLOWED_ORIGIN: "${CORS_ALLOWED_ORIGIN}"
+
+      JAVA_OPTS: >-
+        -Xms64m
+        -Xmx220m
+        -XX:MaxMetaspaceSize=96m
+        -XX:MaxDirectMemorySize=48m
+        -XX:+UseG1GC
+        -XX:+ExitOnOutOfMemoryError
+
+    volumes:
+      - ./wallet:/opt/oracle/wallet:ro
+
+    depends_on:
+      - solicitud-service
+      - usuario-service
+
+    mem_limit: 384m
+
+    networks:
+      - ramona-network
+
+
+  notificacion-service:
+    image: ramona-notificacion-service:local
+    container_name: ramona-notificacion-service
+    restart: unless-stopped
+
+    environment:
+      SERVER_PORT: "8087"
+
+      DB_URL: "${DB_URL}"
+      DB_USERNAME: "${DB_USERNAME}"
+      DB_PASSWORD: "${DB_PASSWORD}"
+
+      USUARIO_SERVICE_URL: "http://usuario-service:8081"
+
+      CORS_ALLOWED_ORIGIN: "${CORS_ALLOWED_ORIGIN}"
+
+      JAVA_OPTS: >-
+        -Xms64m
+        -Xmx220m
+        -XX:MaxMetaspaceSize=96m
+        -XX:MaxDirectMemorySize=48m
+        -XX:+UseG1GC
+        -XX:+ExitOnOutOfMemoryError
+
+    volumes:
+      - ./wallet:/opt/oracle/wallet:ro
+
+    depends_on:
+      - usuario-service
+
+    mem_limit: 384m
+
+    networks:
+      - ramona-network
+
+
+  dashboard-service:
+    image: ramona-dashboard-service:local
+    container_name: ramona-dashboard-service
+    restart: unless-stopped
+
+    environment:
+      SERVER_PORT: "8088"
+
+      USUARIO_SERVICE_URL: "http://usuario-service:8081"
+      SUCURSAL_SERVICE_URL: "http://sucursal-service:8082"
+      SOLICITUD_SERVICE_URL: "http://solicitud-service:8084"
+      INCIDENCIA_SERVICE_URL: "http://incidencia-service:8085"
+      RESENA_SERVICE_URL: "http://resena-service:8086"
+
+      CORS_ALLOWED_ORIGIN: "${CORS_ALLOWED_ORIGIN}"
+
+      JAVA_OPTS: >-
+        -Xms64m
+        -Xmx192m
+        -XX:MaxMetaspaceSize=96m
+        -XX:MaxDirectMemorySize=48m
+        -XX:+UseG1GC
+        -XX:+ExitOnOutOfMemoryError
+
+    depends_on:
+      - usuario-service
+      - sucursal-service
+      - solicitud-service
+      - incidencia-service
+      - resena-service
+
+    mem_limit: 384m
+
+    networks:
+      - ramona-network
+
+
+  auth-service:
+    image: ramona-auth-service:local
+    container_name: ramona-auth-service
+    restart: unless-stopped
+
+    environment:
+      SERVER_PORT: "8089"
+
+      USUARIO_SERVICE_URL: "http://usuario-service:8081"
+
+      AZURE_API_AUDIENCE: "${AZURE_API_AUDIENCE}"
+      AZURE_JWK_SET_URI: "${AZURE_JWK_SET_URI}"
+
+      DEFAULT_CLIENT_ROLE_ID: "${DEFAULT_CLIENT_ROLE_ID}"
+      CORS_ALLOWED_ORIGIN: "${CORS_ALLOWED_ORIGIN}"
+
+      JAVA_OPTS: >-
+        -Xms64m
+        -Xmx192m
+        -XX:MaxMetaspaceSize=96m
+        -XX:MaxDirectMemorySize=48m
+        -XX:+UseG1GC
+        -XX:+ExitOnOutOfMemoryError
+
+    depends_on:
+      - usuario-service
+
+    mem_limit: 384m
+
+    networks:
+      - ramona-network
+
+
+  api-gateway:
+    image: ramona-api-gateway:local
+    container_name: ramona-api-gateway
+    restart: unless-stopped
+
+    ports:
+      - "8080:8080"
+
+    environment:
+      SERVER_PORT: "8080"
+
+      USUARIO_SERVICE_URL: "http://usuario-service:8081"
+      SUCURSAL_SERVICE_URL: "http://sucursal-service:8082"
+      SEGUIMIENTO_SERVICE_URL: "http://seguimiento-service:8083"
+      SOLICITUD_SERVICE_URL: "http://solicitud-service:8084"
+      INCIDENCIA_SERVICE_URL: "http://incidencia-service:8085"
+      RESENA_SERVICE_URL: "http://resena-service:8086"
+      NOTIFICACION_SERVICE_URL: "http://notificacion-service:8087"
+      DASHBOARD_SERVICE_URL: "http://dashboard-service:8088"
+      AUTH_SERVICE_URL: "http://auth-service:8089"
+
+      AZURE_API_AUDIENCE: "${AZURE_API_AUDIENCE}"
+      AZURE_JWK_SET_URI: "${AZURE_JWK_SET_URI}"
+
+      CORS_ALLOWED_ORIGIN: "${CORS_ALLOWED_ORIGIN}"
+
+      JAVA_OPTS: >-
+        -Xms64m
+        -Xmx192m
+        -XX:MaxMetaspaceSize=96m
+        -XX:MaxDirectMemorySize=96m
+        -XX:+UseG1GC
+        -XX:+ExitOnOutOfMemoryError
+
+    depends_on:
+      - usuario-service
+      - sucursal-service
+      - seguimiento-service
+      - solicitud-service
+      - incidencia-service
+      - resena-service
+      - notificacion-service
+      - dashboard-service
+      - auth-service
+
+    mem_limit: 448m
+
+    networks:
+      - ramona-network
+
 
   frontend:
     build:
       context: ./frontend
+      dockerfile: Dockerfile
+
+    image: ramona-frontend:local
     container_name: ramona-frontend
     restart: unless-stopped
+
     ports:
-      - "80:80"
+      - "4200:80"
+
     depends_on:
       - api-gateway
+
+    mem_limit: 128m
+
     networks:
       - ramona-network
 
+
 networks:
   ramona-network:
+    name: ramona-network
     driver: bridge
