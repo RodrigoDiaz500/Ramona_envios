@@ -13,11 +13,13 @@ spring:
 
 
     hikari:
+      maximum-pool-size: 3
+      minimum-idle: 1
       connection-timeout: 30000
       validation-timeout: 5000
-      maximum-pool-size: 5
-      minimum-idle: 1
-
+      idle-timeout: 300000
+      max-lifetime: 900000
+      keepalive-time: 120000
   jpa:
     database-platform: org.hibernate.dialect.OracleDialect
     open-in-view: false
